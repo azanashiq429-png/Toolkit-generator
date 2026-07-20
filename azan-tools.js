@@ -1,0 +1,28 @@
+// Database of 25 Tools Configuration
+export const toolNames = [
+    { id: "text-changer", name: "Text Case Multi-Changer", icon: "fa-font", pro: false, code: "" },
+    { id: "pwd-gen", name: "Secure Random Password Generator", icon: "fa-key", pro: false, code: "" },
+    { id: "base64", name: "Base64 Encoder / Decoder Engine", icon: "fa-code", pro: false, code: "" },
+    { id: "md5-hash", name: "MD5 Data Hash Generator", icon: "fa-hashtag", pro: false, code: "" },
+    { id: "url-enc", name: "URL Component Encryptor", icon: "fa-link", pro: false, code: "" },
+    { id: "json-fmt", name: "JSON Structure Formatter", icon: "fa-brackets-curly", pro: false, code: "" },
+    { id: "html-ent", name: "HTML Entity Code Converter", icon: "fa-file-code", pro: false, code: "" },
+    { id: "device-id", name: "VIP Dynamic Device ID Finder", icon: "fa-mobile-vibrate", pro: true, code: "" },
+    { id: "ip-track", name: "VIP IP Geolocation Tracker", icon: "fa-earth-asia", pro: true, code: "" },
+    { id: "imei-val", name: "VIP IMEI Terminal Validator", icon: "fa-barcode", pro: true, code: "" },
+    { id: "color-pick", name: "HEX / RGB Neon Color Picker", icon: "fa-eye-dropper", pro: false, code: "" },
+    { id: "bin-comp", name: "Binary Code to Text Compiler", icon: "fa-binary", pro: false, code: "" },
+    { id: "qr-gen", name: "Custom Graphic QR Code Generator", icon: "fa-qrcode", pro: false, code: "" },
+    { id: "age-calc", name: "Chronological Age Calculator", icon: "fa-calendar-days", pro: false, code: "" },
+    { id: "word-cnt", name: "Word & Structural Counter", icon: "fa-calculator", pro: false, code: "" },
+    { id: "port-scan", name: "VIP Advanced System Port Scanner", icon: "fa-terminal", pro: true, code: "" },
+    { id: "sub-recon", name: "VIP Subdomain Recon Crawler", icon: "fa-spider", pro: true, code: "" },
+    { id: "regex-test", name: "Regex Pattern Matching Tester", icon: "fa-vial", pro: false, code: "" },
+    { id: "md-preview", name: "Live Markdown Preview Renderer", icon: "fa-file-lines", pro: false, code: "" },
+    { id: "jwt-debug", name: "VIP JWT Token Debugger System", icon: "fa-bug-slash", pro: true, code: "" },
+    { id: "user-agent", name: "User-Agent Header Parser", icon: "fa-chrome", pro: false, code: "" },
+    { id: "text-diff", name: "Text Diff Comparison Engine", icon: "fa-code-compare", pro: false, code: "" },
+    { id: "mac-lookup", name: "VIP MAC Address Vendor Lookup", icon: "fa-network-wired", pro: true, code: "" },
+    { id: "epoch-conv", name: "Unix Epoch Timestamp Converter", icon: "fa-clock", pro: false, code: "" },
+    { id: "script-inj", name: "VIP Custom payload Script Injector", icon: "fa-user-secret", pro: true, code: "" }
+];
