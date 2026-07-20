@@ -83,7 +83,7 @@ onAuthStateChanged(auth, async (user) => {
 // --- DYNAMIC PRO UI UNLOCKER ---
 function applyProUnlocking(unlock) {
     // Video aur Download tabs ab sab ke liye 100% FREE hain, unka restriction logic yahan se uda diya hai!
-    // Yeh function ab sirf Engine Configuration ke premium PRO checkboxes ko handle karega.
+    // Yeh function ab sirf Engine Configuration ke premium PRO checkboxes ko handle queue karega.
     renderToolsCheckboxes(unlock);
 }
 
@@ -305,11 +305,11 @@ function setupDynamicLinkListeners() {
         }
     });
 
-    // --- SAVE TOOLKIT CONFIG TO USER UID ACCOUNT ---
+    // --- SAVE TOOLKIT CONFIG TO USER ACCOUNT & GENERATE INDEX.HTML DOWNLOAD ---
     document.getElementById("btnPublishToolkit")?.addEventListener("click", async () => {
         if (!currentUser) return alert("Session expired. Please re-authenticate.");
         
-        const title = document.getElementById("toolkitTitle").value;
+        const title = document.getElementById("toolkitTitle").value.trim();
         const theme = document.getElementById("toolkitTheme").value;
         const selectedTools = [];
         
@@ -318,8 +318,10 @@ function setupDynamicLinkListeners() {
         });
 
         if(!title) return alert("Please enter a Toolkit Title Name!");
+        if(selectedTools.length === 0) return alert("Kam az kam aik tool par tick zaroor lagayein!");
 
         try {
+            // 1. Cloud Database mein backup save karein
             const docRef = await addDoc(collection(db, "user_toolkits"), {
                 userId: currentUser.uid, 
                 userEmail: currentUser.email,
@@ -328,12 +330,67 @@ function setupDynamicLinkListeners() {
                 selectedTools: selectedTools,
                 createdAt: new Date()
             });
-            alert(`🔥 Toolkit Saved in Cloud Account! ID: ${docRef.id}`);
+
+            // 2. Dynamic Tools HTML Markup taiyar karein
+            let toolsHTMLMarkup = "";
+            selectedTools.forEach((toolId) => {
+                const tool = toolNames.find(t => t.id === toolId);
+                if(tool) {
+                    toolsHTMLMarkup += `
+            <!-- Tool Module Card -->
+            <div style="background: #090e18; border: 1px solid #164e63; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: 0 0 10px rgba(34, 211, 238, 0.05);">
+                <span style="font-weight: bold; font-size: 14px; color: #f3f4f6;"><i class="fa-solid ${tool.icon}" style="color: #22d3ee; margin-right: 8px;"></i> ${tool.name}</span>
+                <button onclick="alert('Launching ${tool.name} Module...')" style="background: linear-gradient(135deg, #0891b2, #0d9488); color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; box-shadow: 0 0 5px rgba(34, 211, 238, 0.2);">LAUNCH</button>
+            </div>`;
+                }
+            });
+
+            // 3. Poori index.html file ka layout text ready karein
+            const fullHTMLContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #04080f; color: #f3f4f6; font-family: 'Segoe UI', system-ui, sans-serif; padding: 30px 20px; display: flex; justify-content: center; align-items: center; min-height: 80vh; }
+        .container { width: 100%; max-width: 460px; background: rgba(9, 14, 24, 0.8); padding: 25px; border-radius: 20px; border: 1px solid rgba(34, 211, 238, 0.15); box-shadow: 0 0 30px rgba(34, 211, 238, 0.05); }
+        h1 { color: #22d3ee; text-align: center; font-size: 24px; margin-bottom: 5px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-shadow: 0 0 10px rgba(34, 211, 238, 0.2); }
+        .credits { text-align: center; color: #eab308; font-size: 10px; font-weight: bold; margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>${title}</h1>
+        <div class="credits">POWERED BY AZAN TOOLKIT GENERATOR</div>
+        <div id="tools-list">
+            ${toolsHTMLMarkup}
+        </div>
+    </div>
+</body>
+</html>`;
+
+            // 4. File Downloader Algorithm (Blob Magic)
+            const blob = new Blob([fullHTMLContent], { type: "text/html" });
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
             
-            // Naya toolkit save hote hi wapas load karein taake list refresh ho jaye
+            // Clean file name layout based on title
+            const fileName = title.toLowerCase().replace(/\s+/g, '_') + "_toolkit.html";
+            downloadLink.download = fileName;
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            alert(`🔥 System Triggered: Toolkit cloud account me save ho gayi hai aur aapki custom file (${fileName}) b download ho chuki hai!`);
+            
+            // Real-time panel reload refresh
             fetchUserToolkits(currentUser.uid);
         } catch (e) {
-            alert("Database write rejected.");
+            console.error(e);
+            alert("Database write or file compilation failed.");
         }
     });
 }
@@ -355,5 +412,4 @@ function setupProClickListeners() {
             alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin (Azan Ali) via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-    }
-                     
+                }
