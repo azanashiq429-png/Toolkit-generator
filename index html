@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZAN TOOLKIT GENERATOR - PRO PLATFORM</title>
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .neon-glow-blue { box-shadow: 0 0 25px rgba(6, 182, 212, 0.3); border: 1px solid rgba(6, 182, 212, 0.45); }
+        .neon-glow-yellow { box-shadow: 0 0 25px rgba(234, 179, 8, 0.35); border: 1px solid rgba(234, 179, 8, 0.5); }
+        .text-glow-cyan { text-shadow: 0 0 12px rgba(34, 211, 238, 0.7); }
+        .text-glow-yellow { text-shadow: 0 0 10px rgba(234, 179, 8, 0.6); }
+        .glass-card { background: linear-gradient(135deg, rgba(12, 19, 34, 0.9) 0%, rgba(8, 13, 24, 0.95) 100%); backdrop-filter: blur(10px); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #060b13; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+    </style>
+</head>
+<body class="bg-[#04080f] text-gray-100 font-sans min-h-screen pb-32 selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- ==================== AUTH SYSTEM CONTAINER (LOGIN / SIGNUP) ==================== -->
+    <div id="authOverlay" class="fixed inset-0 bg-[#04080f] z-[100] flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-6 rounded-2xl neon-glow-blue space-y-5">
+            <div class="text-center">
+                <h2 id="authTitle" class="text-xl font-black text-cyan-400 tracking-widest text-glow-cyan">TERMINAL ACCESS LOGIN</h2>
+                <p id="authSubtitle" class="text-xs text-gray-400 mt-1">Provide credentials to boot AZAN tools gateway</p>
+            </div>
+            
+            <form id="authForm" class="space-y-4">
+                <!-- Username Field (Dynamically toggled via JS) -->
+                <div id="usernameFieldContainer" class="hidden">
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Unique Username</label>
+                    <input type="text" id="authUsername" placeholder="e.g., azan_tech" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-medium text-gray-200 font-mono">
+                </div>
+
+                <div>
+                    <label id="emailFieldLabel" class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Username or Email Address</label>
+                    <input type="text" id="authEmail" required placeholder="Enter username or email..." class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-medium text-gray-200">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Access Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 text-gray-200">
+                </div>
+                
+                <button type="submit" id="btnAuthSubmit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-xs tracking-widest py-4 rounded-xl shadow-md active:scale-95 transition uppercase cursor-pointer">
+                    AUTHENTICATE SECURITY GATEWAY
+                </button>
+            </form>
+
+            <div class="text-center pt-2 border-t border-gray-900">
+                <button id="btnToggleAuthMode" class="text-xs text-yellow-400 hover:underline cursor-pointer font-bold tracking-wide">
+                    Don't have an account? Create Terminal ID
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN PLATFORM DASHBOARD ==================== -->
+    <div id="mainPlatform" class="opacity-30 pointer-events-none transition-all duration-500">
+        <!-- HEADER -->
+        <header class="bg-[#080d16]/90 backdrop-blur-md p-4 flex justify-between items-center border-b border-cyan-950 sticky top-0 z-50 px-5">
+            <div>
+                <h1 class="text-xl font-black tracking-widest text-cyan-400 text-glow-cyan">AZAN TOOLKIT GENERATOR</h1>
+                <p class="text-[11px] text-yellow-400 font-bold tracking-widest mt-0.5 text-glow-yellow">DEVELOPED BY AZAN ALI</p>
+            </div>
+            <div class="relative">
+                <button id="menuBtn" class="bg-[#0f172a] p-2.5 rounded-xl border border-cyan-500/30 text-cyan-400 cursor-pointer active:scale-95 transition">
+                    <i class="fa-solid fa-sliders text-lg"></i>
+                </button>
+                <div id="topMenu" class="hidden absolute right-0 mt-3 w-52 bg-[#080d16] border border-cyan-500/20 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+                    <div class="px-4 py-2.5 text-[10px] text-gray-500 border-b border-gray-900 font-mono truncate" id="userDisplayEmail">Offline Mode</div>
+                    <a href="#" class="flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-gray-300 hover:bg-cyan-950/40 transition border-b border-gray-900/60"><i class="fa-solid fa-wand-magic-sparkles mr-3 text-yellow-400 text-sm"></i> Theme Layout</a>
+                    <button id="btnLogout" class="w-full flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-red-400 hover:bg-red-950/30 transition text-left cursor-pointer"><i class="fa-solid fa-power-off mr-3 text-sm"></i> Log out Platform</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-md mx-auto p-4 mt-2">
+            <!-- HOME TAB: GENERATOR -->
+            <section id="tab-home" class="tab-content active space-y-4">
+                <div class="glass-card p-5 rounded-2xl neon-glow-blue">
+                    <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
+                        <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-gears mr-2"></i> Engine Configuration</h2>
+                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-800">BUILDER v2</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Toolkit Display Identity</label>
+                            <input type="text" id="toolkitTitle" placeholder="Enter toolkit title name..." class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-medium">
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Core Visual Theme</label>
+                            <select id="toolkitTheme" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-bold text-gray-300">
+                                <option value="cyan">Glowing Cyber Cyan (Default)</option>
+                                <option value="yellow">Neon Toxic Yellow Glow</option>
+                                <option value="ruby">VIP Premium Ruby Dragon 👑</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-2">Select Modules & Scripts (<span class="text-cyan-400">25 Available</span>)</label>
+                            <div id="toolsCheckboxContainer" class="space-y-2 max-h-72 overflow-y-auto pr-1 custom-scroll"></div>
+                        </div>
+
+                        <button id="btnPublishToolkit" class="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-black text-xs tracking-widest py-4 rounded-xl mt-2 shadow-[0_4px_20px_rgba(6,182,212,0.25)] active:scale-95 transition cursor-pointer uppercase">
+                            MAKE YOUR TOOLKIT AND LIVE
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LINKS MAKER TAB -->
+            <section id="tab-links" class="tab-content space-y-4">
+                <div class="glass-card p-5 rounded-2xl neon-glow-blue">
+                    <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
+                        <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-link-slash mr-2"></i> Custom Link Aggregator</h2>
+                        <span class="bg-emerald-950 text-emerald-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-emerald-800">UNLIMITED</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Main Dashboard Link Page Name</label>
+                            <input type="text" id="linksPageTitle" placeholder="e.g., Azan Lab Premium Links" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none">
+                        </div>
+
+                        <div id="dynamicLinksContainer" class="space-y-3 pt-2">
+                            <div class="bg-[#090e18] p-3 rounded-xl border border-gray-900 space-y-2 relative link-row">
+                                <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-widest block">Resource Link #1</span>
+                                <input type="text" placeholder="Tool Display Name" class="link-name w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none">
+                                <input type="url" placeholder="Target Link URL (https://...)" class="link-url w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none font-mono text-cyan-500">
+                            </div>
+                        </div>
+
+                        <button type="button" id="btnAddMoreLinks" class="w-full bg-transparent border border-dashed border-cyan-500/30 hover:border-cyan-400 text-cyan-400 py-3 rounded-xl text-xs font-black tracking-wider active:scale-98 transition cursor-pointer">
+                            <i class="fa-solid fa-circle-plus mr-1.5"></i> + ADD NEW TOOL LINK RESOURCE
+                        </button>
+
+                        <button id="btnPublishLinks" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-black text-xs tracking-widest py-4 rounded-xl mt-2 shadow-lg active:scale-95 transition cursor-pointer uppercase">
+                            PUBLISH LIVE UNDER AZAN BRAND
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other Tabs -->
+            <section id="tab-tutorial" class="tab-content text-center py-10 text-gray-400">Tutorial Section Live Soon.</section>
+            <section id="tab-download" class="tab-content text-center py-10 text-gray-400">Download Dashboard Client Active.</section>
+            <section id="tab-pro" class="tab-content text-center py-10 text-gray-400">VIP Pro Terminal Loaded.</section>
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bg-[#060b13]/95 border-t border-cyan-950/80 fixed bottom-0 left-0 right-0 py-3 px-2 flex justify-around items-center z-50 shadow-2xl backdrop-blur-md">
+            <button id="nav-home" class="nav-btn flex flex-col items-center space-y-1 text-cyan-400 focus:outline-none"><i class="fa-solid fa-layer-group text-xl"></i><span class="text-[9px] font-black uppercase">Dashboard</span></button>
+            <button id="nav-links" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-link-slash text-xl"></i><span class="text-[9px] font-black uppercase">Links Maker</span></button>
+            <button id="nav-tutorial" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-circle-play text-xl"></i><span class="text-[9px] font-black uppercase">Tutorial</span></button>
+            <button id="nav-download" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-circle-arrow-down text-xl"></i><span class="text-[9px] font-black uppercase">Download</span></button>
+            <button id="nav-pro" class="nav-btn flex flex-col items-center space-y-1 text-yellow-600/50 focus:outline-none"><i class="fa-solid fa-crown text-xl"></i><span class="text-[9px] font-black uppercase">VIP Pro</span></button>
+        </nav>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
