@@ -33,7 +33,6 @@
             </div>
             
             <form id="authForm" class="space-y-4">
-                <!-- Username Field (Dynamically toggled via JS) -->
                 <div id="usernameFieldContainer" class="hidden">
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Unique Username</label>
                     <input type="text" id="authUsername" placeholder="e.g., azan_tech" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-medium text-gray-200 font-mono">
@@ -154,52 +153,46 @@
                 </div>
             </section>
 
-            <!-- VIDEO TUTORIAL TAB (PREMIUM LOOK) -->
+            <!-- VIDEO TUTORIAL TAB (FREE & ACTIVE NOW) -->
             <section id="tab-tutorial" class="tab-content space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
                         <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-circle-play mr-2"></i> Video Tutorial Gateway</h2>
-                        <span class="bg-red-950 text-red-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-red-900 uppercase">PRO Content</span>
+                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">FREE ACCESS</span>
                     </div>
 
                     <!-- Video 1 -->
-                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] flex flex-col justify-center items-center z-10 transition group-hover:backdrop-blur-[1px]">
-                            <i class="fa-solid fa-lock text-yellow-500 text-lg mb-1 animate-bounce"></i>
-                            <span class="text-[9px] font-black tracking-widest text-yellow-400 font-mono">UNLOCK WITH PRO</span>
-                        </div>
-                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative">
-                            <i class="fa-brands fa-youtube text-4xl text-gray-700"></i>
+                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
+                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
+                            <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
+                            <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] text-gray-400 px-1.5 py-0.5 rounded font-mono">10:45</span>
                         </div>
                         <div class="space-y-1">
-                            <h4 class="text-xs font-bold text-gray-300 font-mono">01. Configure Termux & Linux Environment</h4>
-                            <p class="text-[10px] text-gray-500 font-mono">Learn how to route Termux custom ports to AZAN Cloud gateway node securely.</p>
+                            <h4 class="text-xs font-bold text-gray-200 font-mono">01. Configure Termux & Linux Environment</h4>
+                            <p class="text-[10px] text-gray-400 font-mono">Learn how to route Termux custom ports to AZAN Cloud gateway node securely.</p>
                         </div>
                     </div>
 
                     <!-- Video 2 -->
-                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] flex flex-col justify-center items-center z-10">
-                            <i class="fa-solid fa-lock text-yellow-500 text-lg mb-1"></i>
-                            <span class="text-[9px] font-black tracking-widest text-yellow-400 font-mono">UNLOCK WITH PRO</span>
-                        </div>
-                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center">
-                            <i class="fa-brands fa-youtube text-4xl text-gray-700"></i>
+                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
+                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
+                            <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
+                            <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] text-gray-400 px-1.5 py-0.5 rounded font-mono">14:20</span>
                         </div>
                         <div class="space-y-1">
-                            <h4 class="text-xs font-bold text-gray-300 font-mono">02. Advanced Custom Script Injection</h4>
-                            <p class="text-[10px] text-gray-500 font-mono">Deploy modular front-end packages and toolkit assets under custom subdomains.</p>
+                            <h4 class="text-xs font-bold text-gray-200 font-mono">02. Advanced Custom Script Injection</h4>
+                            <p class="text-[10px] text-gray-400 font-mono">Deploy modular front-end packages and toolkit assets under custom subdomains.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- DOWNLOAD TAB (PREMIUM LOOK) -->
+            <!-- DOWNLOAD TAB (FREE & ACTIVE NOW) -->
             <section id="tab-download" class="tab-content space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
                         <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-circle-arrow-down mr-2"></i> Client App Downloader</h2>
-                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">Secure Build</span>
+                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">FREE DOWNLOAD</span>
                     </div>
 
                     <p class="text-xs text-gray-400 font-mono leading-relaxed bg-[#090e18] p-3 rounded-xl border border-gray-900">
@@ -207,10 +200,7 @@
                     </p>
 
                     <!-- APK Download Card -->
-                    <div class="p-3.5 bg-[#080d16] border border-cyan-950 rounded-xl flex items-center justify-between relative overflow-hidden">
-                        <div class="absolute inset-0 bg-slate-950/85 flex items-center justify-center z-10">
-                            <span class="text-[9px] font-mono font-bold text-yellow-500 tracking-wider"><i class="fa-solid fa-key mr-1"></i> VIP Access Required</span>
-                        </div>
+                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-emerald-950/50 border border-emerald-900/60 rounded-xl text-emerald-400 text-lg">
                                 <i class="fa-brands fa-android"></i>
@@ -220,14 +210,11 @@
                                 <p class="text-[9px] text-gray-500 font-mono">v2.0.4 • Secure Wrapper Bundle</p>
                             </div>
                         </div>
-                        <i class="fa-solid fa-download text-gray-600 text-sm"></i>
+                        <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
                     </div>
 
                     <!-- Linux Script Download Card -->
-                    <div class="p-3.5 bg-[#080d16] border border-cyan-950 rounded-xl flex items-center justify-between relative overflow-hidden">
-                        <div class="absolute inset-0 bg-slate-950/85 flex items-center justify-center z-10">
-                            <span class="text-[9px] font-mono font-bold text-yellow-500 tracking-wider"><i class="fa-solid fa-key mr-1"></i> VIP Access Required</span>
-                        </div>
+                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-blue-950/50 border border-blue-900/60 rounded-xl text-blue-400 text-lg">
                                 <i class="fa-solid fa-terminal"></i>
@@ -237,7 +224,7 @@
                                 <p class="text-[9px] text-gray-500 font-mono">setup.sh • Automated Environment</p>
                             </div>
                         </div>
-                        <i class="fa-solid fa-download text-gray-600 text-sm"></i>
+                        <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
                     </div>
                 </div>
             </section>
@@ -261,4 +248,75 @@
                             <p class="text-[9px] text-gray-500 font-mono">Single Payment</p>
                         </div>
                     </div>
-                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11
+                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Unlock all 25+ PRO Scripts</li>
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Cloud Terminal ID Authorization</li>
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Basic 30-Day Storage Backup</li>
+                    </ul>
+                    <button class="w-full bg-[#111928] hover:bg-yellow-500 hover:text-slate-950 border border-yellow-500/20 text-yellow-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md">
+                        ACTIVATE GATEWAY NODE
+                    </button>
+                </div>
+
+                <!-- 3 Month Card -->
+                <div class="glass-card p-5 rounded-2xl neon-glow-yellow relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gradient-to-l from-yellow-500 to-amber-600 text-slate-950 font-black text-[8px] font-mono tracking-widest px-4 py-1 rotate-45 translate-x-4 translate-y-2 uppercase shadow-sm">
+                        Popular
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] bg-yellow-400 text-slate-950 px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider">Cyber Stack</span>
+                            <h3 class="text-base font-black text-gray-100 mt-2 font-mono">3 Month Access</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xl font-black text-yellow-400 font-mono">Rs. 1000</span>
+                            <p class="text-[9px] text-gray-400 font-mono">Saves Rs. 200</p>
+                        </div>
+                    </div>
+                    <ul class="mt-4 space-y-2 border-t border-yellow-500/10 pt-3 text-[11px] text-gray-300 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> All 25+ Premium PRO Tools</li>
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Full Access to Video Tutorials</li>
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Unlimited Links Maker Configurations</li>
+                    </ul>
+                    <button class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 active:scale-95 transition cursor-pointer uppercase shadow-lg">
+                        BOOT PRO GATEWAY
+                    </button>
+                </div>
+
+                <!-- 1 Year Card -->
+                <div class="glass-card p-5 rounded-2xl border border-gray-900 relative transition hover:border-red-600/30 overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] bg-red-950 text-red-400 border border-red-900 px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider">Ultimate Dev</span>
+                            <h3 class="text-base font-black text-gray-100 mt-2 font-mono">1 Year Access</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xl font-black text-red-500 font-mono text-glow-red">Rs. 3000</span>
+                            <p class="text-[9px] text-gray-500 font-mono">Ultimate Pack</p>
+                        </div>
+                    </div>
+                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> Complete Suite + Future Beta Tools</li>
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> App Downloader Client Unlimited Access</li>
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> 24/7 Priority Cloud Dev Node Support</li>
+                    </ul>
+                    <button class="w-full bg-[#111928] hover:bg-red-600 hover:text-white border border-red-500/20 text-red-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md">
+                        DEPLOY ENTERPRISE INSTANCE
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bg-[#060b13]/95 border-t border-cyan-950/80 fixed bottom-0 left-0 right-0 py-3 px-2 flex justify-around items-center z-50 shadow-2xl backdrop-blur-md">
+            <button id="nav-home" class="nav-btn flex flex-col items-center space-y-1 text-cyan-400 focus:outline-none"><i class="fa-solid fa-layer-group text-xl"></i><span class="text-[9px] font-black uppercase">Dashboard</span></button>
+            <button id="nav-links" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-link-slash text-xl"></i><span class="text-[9px] font-black uppercase">Links Maker</span></button>
+            <button id="nav-tutorial" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-circle-play text-xl"></i><span class="text-[9px] font-black uppercase">Tutorial</span></button>
+            <button id="nav-download" class="nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none"><i class="fa-solid fa-circle-arrow-down text-xl"></i><span class="text-[9px] font-black uppercase">Download</span></button>
+            <button id="nav-pro" class="nav-btn flex flex-col items-center space-y-1 text-yellow-600/50 focus:outline-none"><i class="fa-solid fa-crown text-xl"></i><span class="text-[9px] font-black uppercase">VIP Pro</span></button>
+        </nav>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+    </html>
