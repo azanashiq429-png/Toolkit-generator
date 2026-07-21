@@ -1,5 +1,6 @@
 import { toolNames } from './tools-data.js';
 import { generateDashboardHTML } from './template.js';
+import { generateTemplate3 } from './template3.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -310,8 +311,13 @@ function setupDynamicLinkListeners() {
         const title = document.getElementById("toolkitTitle").value.trim();
         const theme = document.getElementById("toolkitTheme").value;
         const templateStyle = document.getElementById("templateSelector") ? document.getElementById("templateSelector").value : "grid";
-        const selectedTools = [];
         
+        // --- VIP PRO SECURITY CHECK FOR TEMPLATE 3 ---
+        if (templateStyle === "template3" && !isUserPro) {
+            return alert("🔒 Security Block: Template 3 sirf VIP PRO users ke liye hai! Isay use karne ke liye Pro package buy karein.");
+        }
+
+        const selectedTools = [];
         document.querySelectorAll(".tool-checkbox:checked").forEach(cb => {
             selectedTools.push(cb.value);
         });
@@ -363,15 +369,26 @@ function setupDynamicLinkListeners() {
                 }
             });
 
-            // Call compiled template function from template.js with template style support
-            const compiledApplicationHTML = generateDashboardHTML(
-                title,
-                themeClass,
-                dashboardCardsHTML,
-                modalViewsHTML,
-                coreExecutableJS,
-                templateStyle
-            );
+            // Call compiled template function based on selected template style
+            let compiledApplicationHTML = "";
+            if (templateStyle === "template3") {
+                compiledApplicationHTML = generateTemplate3(
+                    title,
+                    themeClass,
+                    dashboardCardsHTML,
+                    modalViewsHTML,
+                    coreExecutableJS
+                );
+            } else {
+                compiledApplicationHTML = generateDashboardHTML(
+                    title,
+                    themeClass,
+                    dashboardCardsHTML,
+                    modalViewsHTML,
+                    coreExecutableJS,
+                    templateStyle
+                );
+            }
 
             const blob = new Blob([compiledApplicationHTML], { type: "text/html" });
             const dynamicTrigger = document.createElement("a");
@@ -410,4 +427,4 @@ function setupProClickListeners() {
             alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin (Azan Ali) via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-}
+                }
