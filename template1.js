@@ -169,22 +169,27 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         }
 
         .modal-portal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(12px);
-            justify-content: center; align-items: center;
-            z-index: 1000; padding: 20px;
-        }
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(12px);
+    justify-content: center; align-items: center;
+    z-index: 1000; padding: 20px;
+}
 
-        .modal-card {
-            background: #090e18;
-            border: 1px solid var(--primary);
-            width: 100%; max-width: 680px;
-            padding: 30px; border-radius: 28px;
-            position: relative;
-        }
+.modal-card {
+    background: #090e18;
+    border: 1px solid var(--primary);
+    width: 100%; 
+    max-width: 680px;
+    max-height: 90vh;        /* 👈 1. Screen se bahar na jaye */
+    overflow-y: auto;        /* 👈 2. Lambe tools ke liye scrollbar aa jaye */
+    padding: 30px; 
+    border-radius: 28px;
+    position: relative;
+    box-sizing: border-box;  /* 👈 Padding se layout na toote */
+}
 
         .dismiss-portal-btn {
             position: absolute; top: 18px; right: 24px;
