@@ -229,6 +229,7 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             border-color: transparent;
         }
 
+        /* Spacious & Modern Full-Size Modal Portal Window Layers */
         .modal-portal {
             display: none;
             position: fixed;
@@ -236,8 +237,8 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(3, 7, 18, 0.9);
-            backdrop-filter: blur(8px);
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -248,25 +249,28 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             background: #090e18;
             border: 1px solid var(--primary);
             width: 100%;
-            max-width: 420px;
-            padding: 30px;
-            border-radius: 24px;
+            max-width: 680px; /* Barhi aur khuli window */
+            min-height: 320px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 40px 30px;
+            border-radius: 28px;
             position: relative;
-            box-shadow: 0 0 40px var(--primary-glow);
-            animation: modalRise 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px var(--primary-glow), 0 20px 40px rgba(0,0,0,0.6);
+            animation: modalRise 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes modalRise {
-            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            from { transform: translateY(40px) scale(0.92); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         .dismiss-portal-btn {
             position: absolute;
-            top: 14px;
-            right: 20px;
-            color: #6b7280;
-            font-size: 24px;
+            top: 18px;
+            right: 24px;
+            color: #9ca3af;
+            font-size: 26px;
             font-weight: bold;
             cursor: pointer;
             transition: color 0.2s;
@@ -278,14 +282,14 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
 
         .modal-card h3 {
             color: var(--primary);
-            font-size: 17px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 25px;
             text-transform: uppercase;
             font-weight: 700;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
             font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -322,5 +326,5 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
     </script>
 </body>
 </html>`;
-  }
-  
+    }
+                  
