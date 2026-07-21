@@ -309,6 +309,7 @@ function setupDynamicLinkListeners() {
         
         const title = document.getElementById("toolkitTitle").value.trim();
         const theme = document.getElementById("toolkitTheme").value;
+        const templateStyle = document.getElementById("templateSelector") ? document.getElementById("templateSelector").value : "grid";
         const selectedTools = [];
         
         document.querySelectorAll(".tool-checkbox:checked").forEach(cb => {
@@ -324,6 +325,7 @@ function setupDynamicLinkListeners() {
                 userEmail: currentUser.email,
                 title: title,
                 theme: theme,
+                template: templateStyle,
                 selectedTools: selectedTools,
                 createdAt: new Date()
             });
@@ -361,13 +363,14 @@ function setupDynamicLinkListeners() {
                 }
             });
 
-            // Call compiled template function from template.js
+            // Call compiled template function from template.js with template style support
             const compiledApplicationHTML = generateDashboardHTML(
                 title,
                 themeClass,
                 dashboardCardsHTML,
                 modalViewsHTML,
-                coreExecutableJS
+                coreExecutableJS,
+                templateStyle
             );
 
             const blob = new Blob([compiledApplicationHTML], { type: "text/html" });
