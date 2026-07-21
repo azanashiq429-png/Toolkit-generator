@@ -105,13 +105,13 @@
                             </select>
                         </div>
 
-                        <div class="control-group">
-    <label for="templateSelector">Choose Template Style:</label>
-    <select id="templateSelector" class="custom-input">
-        <option value="grid">Template 1: Cyber Grid (3x3)</option>
-        <option value="list">Template 2: Vertical List Stack</option>
-        <option value="neon">Template 3: Neo-Minimal Compact</option>
-    </select>
+                        <div>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Choose Template Style</label>
+                            <select id="templateSelector" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-bold text-gray-300">
+                                <option value="grid">Template 1: Cyber Grid (3x3)</option>
+                                <option value="list">Template 2: Vertical List Stack</option>
+                                <option value="template3">Template 3: Neo-Minimal Compact (VIP 👑)</option>
+                            </select>
                         </div>
                         
                         <div>
@@ -162,7 +162,7 @@
                 </div>
             </section>
 
-            <!-- VIDEO TUTORIAL TAB (FREE & ACTIVE NOW) -->
+            <!-- VIDEO TUTORIAL TAB -->
             <section id="tab-tutorial" class="tab-content space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
@@ -170,7 +170,6 @@
                         <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">FREE ACCESS</span>
                     </div>
 
-                    <!-- Video 1 -->
                     <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
                         <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
                             <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
@@ -182,7 +181,6 @@
                         </div>
                     </div>
 
-                    <!-- Video 2 -->
                     <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
                         <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
                             <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
@@ -196,7 +194,7 @@
                 </div>
             </section>
 
-            <!-- DOWNLOAD TAB (FREE & ACTIVE NOW) -->
+            <!-- DOWNLOAD TAB -->
             <section id="tab-download" class="tab-content space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
@@ -208,7 +206,6 @@
                         Download the standalone **AZAN Tools Linux binary** and **Android APK bundle** to host tools locally via terminal bypass.
                     </p>
 
-                    <!-- APK Download Card -->
                     <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-emerald-950/50 border border-emerald-900/60 rounded-xl text-emerald-400 text-lg">
@@ -222,7 +219,6 @@
                         <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
                     </div>
 
-                    <!-- Linux Script Download Card -->
                     <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-blue-950/50 border border-blue-900/60 rounded-xl text-blue-400 text-lg">
@@ -238,14 +234,13 @@
                 </div>
             </section>
 
-            <!-- VIP PRO TERMINAL TAB (3 PRICING CARDS) -->
+            <!-- VIP PRO TERMINAL TAB -->
             <section id="tab-pro" class="tab-content space-y-5">
                 <div class="text-center space-y-1 py-2">
                     <h2 class="text-lg font-black text-yellow-400 tracking-widest text-glow-yellow uppercase"><i class="fa-solid fa-crown mr-1"></i> VIP Upgrade Portal</h2>
                     <p class="text-[11px] text-gray-400 font-mono">Unlock advanced cloud systems and complete scripting features</p>
                 </div>
-
-                <!-- 1 Month Card -->
+<!-- 1 Month Card -->
                 <div class="glass-card p-5 rounded-2xl border border-gray-900 relative transition hover:border-yellow-600/30 overflow-hidden">
                     <div class="flex justify-between items-start">
                         <div>
@@ -269,9 +264,6 @@
 
                 <!-- 3 Month Card -->
                 <div class="glass-card p-5 rounded-2xl neon-glow-yellow relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-gradient-to-l from-yellow-500 to-amber-600 text-slate-950 font-black text-[8px] font-mono tracking-widest px-4 py-1 rotate-45 translate-x-4 translate-y-2 uppercase shadow-sm">
-                        Popular
-                    </div>
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="text-[10px] bg-yellow-400 text-slate-950 px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider">Cyber Stack</span>
@@ -327,7 +319,7 @@
     </div>
 
     <script type="module" src="app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </body>
     </html>
