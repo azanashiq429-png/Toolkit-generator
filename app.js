@@ -270,31 +270,79 @@ function setupDynamicLinkListeners() {
     const addBtn = document.getElementById("btnAddMoreLinks");
     const container = document.getElementById("dynamicLinksContainer");
 
+    // 1. Add New Resource Link Row
     addBtn?.addEventListener("click", () => {
         linkCount++;
         const rowId = `link_row_${linkCount}`;
         const markup = `
-            <div class="bg-[#090e18] p-3 rounded-xl border border-gray-900 space-y-2 relative transition duration-300" id="${rowId}">
+            <div class="bg-[#090e18] p-3 rounded-xl border border-gray-900 space-y-2 relative transition duration-300 link-row" id="${rowId}">
                 <div class="flex justify-between items-center">
                     <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-widest">Resource Link #${linkCount}</span>
                     <button type="button" class="btn-delete-row text-red-500 hover:text-red-400 text-xs font-bold px-1 focus:outline-none cursor-pointer">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>
-                <input type="text" placeholder="Tool Display Name" class="link-name w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none">
-                <input type="url" placeholder="Target Link URL (https://...)" class="link-url w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none font-mono text-cyan-500">
+                <input type="text" placeholder="Tool Display Name" class="link-name w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none text-gray-200">
+                <input type="url" placeholder="Target Link URL (https://...)" class="link-url w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none font-mono text-cyan-400">
             </div>
         `;
         container?.insertAdjacentHTML('beforeend', markup);
     });
 
+    // 2. Delete Link Row Event
     container?.addEventListener("click", (e) => {
         const deleteBtn = e.target.closest(".btn-delete-row");
         if (deleteBtn) {
-            deleteBtn.closest(".bg-\\[\\#090e18\\]").remove();
+            deleteBtn.closest(".link-row, .bg-\\[\\#090e18\\]")?.remove();
         }
     });
 
+    // 3. PUBLISH LINKS MAKER (Custom Link Aggregator Generator)
+    const handleLinksPublish = () => {
+        const pageTitleInput = document.querySelector("#tab-links_maker input[type='text']") || document.getElementById("linksPageTitle");
+        const pageTitle = pageTitleInput?.value.trim() || "AZAN LAB LINKS";
+
+        const linkRows = document.querySelectorAll("#tab-links_maker .link-row, #dynamicLinksContainer > div");
+        const linksData = [];
+
+        linkRows.forEach((row) => {
+            const name = row.querySelector(".link-name")?.value.trim() || row.querySelector("input[placeholder*='Display']")?.value.trim();
+            const url = row.querySelector(".link-url")?.value.trim() || row.querySelector("input[placeholder*='URL']")?.value.trim();
+            if (name && url) {
+                linksData.push({ name, url });
+            }
+        });
+
+        if (linksData.length === 0) {
+            return alert("⚠️ Kam az kam 1 Link Name aur Target URL fill karein!");
+        }
+
+        const linksPageHTML = createLinksLandingPageHTML(pageTitle, linksData);
+
+        const blob = new Blob([linksPageHTML], { type: "text/html" });
+        const trigger = document.createElement("a");
+        trigger.href = URL.createObjectURL(blob);
+        
+        const fileName = pageTitle.toLowerCase().replace(/\s+/g, "_") + "_links.html";
+        trigger.download = fileName;
+        
+        document.body.appendChild(trigger);
+        trigger.click();
+        document.body.removeChild(trigger);
+
+        alert(`🔥 LINKS PAGE GENERATED SUCCESSFULLY!\nDownloaded file: ${fileName}`);
+    };
+
+    // Global listener catch for Links Maker Button Click
+    document.addEventListener("click", (e) => {
+        const target = e.target.closest("button");
+        if (target && target.innerText && target.innerText.includes("PUBLISH LIVE UNDER AZAN BRAND")) {
+            e.preventDefault();
+            handleLinksPublish();
+        }
+    });
+
+    // 4. PUBLISH MAIN TOOLKIT (Dashboard SaaS Generator)
     document.getElementById("btnPublishToolkit")?.addEventListener("click", async () => {
         if (!currentUser) return alert("Session expired. Please re-authenticate.");
         
@@ -399,6 +447,109 @@ function setupDynamicLinkListeners() {
     });
 }
 
+// --- LINKTREE STYLE HTML GENERATOR FOR LINKS MAKER ---
+function createLinksLandingPageHTML(title, linksData) {
+    let linksButtonsHTML = "";
+    
+    linksData.forEach(item => {
+        linksButtonsHTML += `
+            <a href="${item.url}" target="_blank" class="link-btn">
+                <span>${item.name}</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>\n`;
+    });
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background: #04080f;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+        .brand-badge {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid #06b6d4;
+            color: #22d3ee;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+        }
+        .links-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .link-btn {
+            background: linear-gradient(135deg, rgba(13, 19, 33, 0.9) 0%, rgba(9, 14, 24, 0.9) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 14px;
+            padding: 16px 20px;
+            color: #f3f4f6;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .link-btn:hover {
+            border-color: #22d3ee;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+            color: #22d3ee;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="brand-badge">POWERED BY AZAN TECH LAB</span>
+        <h1>${title}</h1>
+        <div class="links-stack">
+            ${linksButtonsHTML}
+        </div>
+        <footer>© AZAN BRAND ALL RIGHTS RESERVED</footer>
+    </div>
+</body>
+</html>`;
+}
+
 function setupProClickListeners() {
     const proButtons = document.querySelectorAll("#tab-pro button");
     
@@ -414,5 +565,4 @@ function setupProClickListeners() {
             alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-            }
-                
+        }
