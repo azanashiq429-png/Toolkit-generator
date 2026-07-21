@@ -1,5 +1,5 @@
 import { toolNames } from './tools-data.js';
-import { generateDashboardHTML } from './template.js';
+import { generateDashboardHTML } from './template1.js';
 import { generateTemplate3 } from './template3.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -44,8 +44,8 @@ onAuthStateChanged(auth, async (user) => {
 
     if (user) {
         currentUser = user;
-        authOverlay.classList.add("hidden");
-        mainPlatform.classList.remove("opacity-30", "pointer-events-none");
+        authOverlay?.classList.add("hidden");
+        mainPlatform?.classList.remove("opacity-30", "pointer-events-none");
         
         // Fetch username & PRO status from cloud profile mapping
         if(userDisplayEmail) {
@@ -73,8 +73,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         currentUser = null;
         isUserPro = false;
-        authOverlay.classList.remove("hidden");
-        mainPlatform.classList.add("opacity-30", "pointer-events-none");
+        authOverlay?.classList.remove("hidden");
+        mainPlatform?.classList.add("opacity-30", "pointer-events-none");
         
         const container = document.getElementById("savedToolkitsContainer");
         if(container) container.innerHTML = "";
@@ -107,7 +107,7 @@ async function fetchUserToolkits(userId) {
         
         snap.forEach((doc) => {
             const data = doc.data();
-            const toolsList = data.selectedTools.length > 0 ? data.selectedTools.join(", ") : "No tools selected";
+            const toolsList = data.selectedTools && data.selectedTools.length > 0 ? data.selectedTools.join(", ") : "No tools selected";
             
             const card = `
                 <div class="bg-[#090e18] p-3.5 rounded-xl border border-cyan-950/40 space-y-2 relative transition hover:border-cyan-800">
@@ -138,36 +138,38 @@ function setupAuthSystem() {
     const emailLabel = document.getElementById("emailFieldLabel");
 
     toggleBtn?.addEventListener("click", () => {
-        authForm.reset();
+        authForm?.reset();
         if (authMode === "login") {
             authMode = "signup";
-            authTitle.innerText = "CREATE TERMINAL ID";
-            authSubtitle.innerText = "Register your profile into AZAN cloud servers";
-            submitBtn.innerText = "GENERATE SECURITY ACCOUNT";
-            toggleBtn.innerText = "Already have an ID? Authentication Portal";
-            usernameContainer.classList.remove("hidden");
-            document.getElementById("authUsername").required = true;
-            emailLabel.innerText = "Secure Email Address";
+            if(authTitle) authTitle.innerText = "CREATE TERMINAL ID";
+            if(authSubtitle) authSubtitle.innerText = "Register your profile into AZAN cloud servers";
+            if(submitBtn) submitBtn.innerText = "GENERATE SECURITY ACCOUNT";
+            if(toggleBtn) toggleBtn.innerText = "Already have an ID? Authentication Portal";
+            usernameContainer?.classList.remove("hidden");
+            const authUsername = document.getElementById("authUsername");
+            if(authUsername) authUsername.required = true;
+            if(emailLabel) emailLabel.innerText = "Secure Email Address";
         } else {
             authMode = "login";
-            authTitle.innerText = "TERMINAL ACCESS LOGIN";
-            authSubtitle.innerText = "Provide your credentials to boot AZAN tools gateway";
-            submitBtn.innerText = "AUTHENTICATE SECURITY GATEWAY";
-            toggleBtn.innerText = "Don't have an account? Create Terminal ID";
-            usernameContainer.classList.add("hidden");
-            document.getElementById("authUsername").required = false;
-            emailLabel.innerText = "Username or Email Address";
+            if(authTitle) authTitle.innerText = "TERMINAL ACCESS LOGIN";
+            if(authSubtitle) authSubtitle.innerText = "Provide your credentials to boot AZAN tools gateway";
+            if(submitBtn) submitBtn.innerText = "AUTHENTICATE SECURITY GATEWAY";
+            if(toggleBtn) toggleBtn.innerText = "Don't have an account? Create Terminal ID";
+            usernameContainer?.classList.add("hidden");
+            const authUsername = document.getElementById("authUsername");
+            if(authUsername) authUsername.required = false;
+            if(emailLabel) emailLabel.innerText = "Username or Email Address";
         }
     });
 
     authForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const inputField = document.getElementById("authEmail").value.trim().toLowerCase();
-        const password = document.getElementById("authPassword").value;
+        const inputField = document.getElementById("authEmail")?.value.trim().toLowerCase();
+        const password = document.getElementById("authPassword")?.value;
 
         try {
             if (authMode === "signup") {
-                const username = document.getElementById("authUsername").value.trim().toLowerCase();
+                const username = document.getElementById("authUsername")?.value.trim().toLowerCase();
                 const email = inputField;
 
                 if(!/^[a-zA-Z0-9_]{3,15}$/.test(username)) {
@@ -256,7 +258,7 @@ function setupNavigation() {
         btn.addEventListener("click", () => {
             const tabId = btn.id.replace("nav-", "");
             document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-            document.getElementById(`tab-${tabId}`).classList.add("active");
+            document.getElementById(`tab-${tabId}`)?.classList.add("active");
             
             navButtons.forEach(b => b.className = "nav-btn flex flex-col items-center space-y-1 text-gray-500 focus:outline-none");
             btn.className = tabId === 'pro' 
@@ -308,8 +310,8 @@ function setupDynamicLinkListeners() {
     document.getElementById("btnPublishToolkit")?.addEventListener("click", async () => {
         if (!currentUser) return alert("Session expired. Please re-authenticate.");
         
-        const title = document.getElementById("toolkitTitle").value.trim();
-        const theme = document.getElementById("toolkitTheme").value;
+        const title = document.getElementById("toolkitTitle")?.value.trim();
+        const theme = document.getElementById("toolkitTheme")?.value;
         const templateStyle = document.getElementById("templateSelector") ? document.getElementById("templateSelector").value : "grid";
         
         // --- VIP PRO SECURITY CHECK FOR TEMPLATE 3 ---
@@ -427,4 +429,5 @@ function setupProClickListeners() {
             alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin (Azan Ali) via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-}
+    }
+        
