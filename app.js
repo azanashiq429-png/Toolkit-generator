@@ -427,4 +427,4 @@ function setupProClickListeners() {
             alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin (Azan Ali) via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-                }
+}
