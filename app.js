@@ -25,7 +25,7 @@ const auth = getAuth(app);
 let linkCount = 1;
 let authMode = "login"; 
 let currentUser = null;
-let isUserPro = false; // Tracks if current user is VIP PRO
+let isUserPro = false;
 
 // --- INITIALIZE INTERFACE ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,27 +47,22 @@ onAuthStateChanged(auth, async (user) => {
         authOverlay?.classList.add("hidden");
         mainPlatform?.classList.remove("opacity-30", "pointer-events-none");
         
-        // Fetch username & PRO status from cloud profile mapping
         if(userDisplayEmail) {
             userDisplayEmail.innerText = `Loading Session...`;
             const q = query(collection(db, "usernames"), where("email", "==", user.email));
             const snap = await getDocs(q);
             if(!snap.empty) {
                 const userData = snap.docs[0].data();
-                isUserPro = userData.isPro === true; // Check if user has PRO status
+                isUserPro = userData.isPro === true;
                 
-                // Show badge based on PRO status
                 const badge = isUserPro ? "👑 VIP PRO" : "Online";
                 userDisplayEmail.innerText = `@${snap.docs[0].id} (${badge})`;
-                
-                // Trigger UI Unlocker if user is premium
                 applyProUnlocking(isUserPro);
             } else {
                 userDisplayEmail.innerText = `${user.email}`;
             }
         }
         
-        // Live Fetch: Dashboard par saved toolkits load karein
         fetchUserToolkits(user.uid);
 
     } else {
@@ -78,16 +73,14 @@ onAuthStateChanged(auth, async (user) => {
         
         const container = document.getElementById("savedToolkitsContainer");
         if(container) container.innerHTML = "";
-        applyProUnlocking(false); // Reset to locked state on logout
+        applyProUnlocking(false);
     }
 });
 
-// --- DYNAMIC PRO UI UNLOCKER ---
 function applyProUnlocking(unlock) {
     renderToolsCheckboxes(unlock);
 }
 
-// --- FETCH AND DISPLAY SAVED TOOLKITS FROM CLOUD ---
 async function fetchUserToolkits(userId) {
     const container = document.getElementById("savedToolkitsContainer");
     if (!container) return;
@@ -127,7 +120,6 @@ async function fetchUserToolkits(userId) {
     }
 }
 
-// --- AUTHENTICATION FLOW CONTROLLER (EMAIL + USERNAME HYBRID) ---
 function setupAuthSystem() {
     const authForm = document.getElementById("authForm");
     const toggleBtn = document.getElementById("btnToggleAuthMode");
@@ -220,7 +212,6 @@ function setupAuthSystem() {
     });
 }
 
-// Render Tools checkboxes
 function renderToolsCheckboxes(hasProAccess = false) {
     const container = document.getElementById("toolsCheckboxContainer");
     if (!container) return;
@@ -251,7 +242,6 @@ function renderToolsCheckboxes(hasProAccess = false) {
     });
 }
 
-// Tab Router Switcher Layout Control
 function setupNavigation() {
     const navButtons = document.querySelectorAll(".nav-btn");
     navButtons.forEach(btn => {
@@ -276,7 +266,6 @@ function setupNavigation() {
     window.addEventListener("click", () => topMenu?.classList.add("hidden"));
 }
 
-// Unlimited Input Row Builders logic & Template compilation
 function setupDynamicLinkListeners() {
     const addBtn = document.getElementById("btnAddMoreLinks");
     const container = document.getElementById("dynamicLinksContainer");
@@ -306,7 +295,6 @@ function setupDynamicLinkListeners() {
         }
     });
 
-    // --- GRID COMPILER LOGIC VIA TEMPLATE MODULE ---
     document.getElementById("btnPublishToolkit")?.addEventListener("click", async () => {
         if (!currentUser) return alert("Session expired. Please re-authenticate.");
         
@@ -314,7 +302,6 @@ function setupDynamicLinkListeners() {
         const theme = document.getElementById("toolkitTheme")?.value;
         const templateStyle = document.getElementById("templateSelector") ? document.getElementById("templateSelector").value : "grid";
         
-        // --- VIP PRO SECURITY CHECK FOR TEMPLATE 3 ---
         if (templateStyle === "template3" && !isUserPro) {
             return alert("🔒 Security Block: Template 3 sirf VIP PRO users ke liye hai! Isay use karne ke liye Pro package buy karein.");
         }
@@ -371,7 +358,6 @@ function setupDynamicLinkListeners() {
                 }
             });
 
-            // Call compiled template function based on selected template style
             let compiledApplicationHTML = "";
             if (templateStyle === "template3") {
                 compiledApplicationHTML = generateTemplate3(
@@ -413,7 +399,6 @@ function setupDynamicLinkListeners() {
     });
 }
 
-// --- VIP PRO PACKAGE CLICK HANDLERS ---
 function setupProClickListeners() {
     const proButtons = document.querySelectorAll("#tab-pro button");
     
@@ -426,8 +411,8 @@ function setupProClickListeners() {
             else if (index === 1) { planName = "3 Month Cyber Stack"; price = "Rs. 1000"; }
             else if (index === 2) { planName = "1 Year Ultimate Dev"; price = "Rs. 3000"; }
             
-            alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin (Azan Ali) via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
+            alert(`📢 AZAN TECH LAB - VIP UPGRADE\n\nPlan: ${planName}\nPrice: ${price}\n\nTo activate, please contact Admin via WhatsApp/Telegram to send payment, and provide your Username to get instantly upgraded!`);
         });
     });
-    }
-        
+            }
+                
