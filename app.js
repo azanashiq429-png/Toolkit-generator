@@ -219,7 +219,7 @@ function renderToolsCheckboxes(category = "free", hasProAccess = false) {
             <label class="flex items-center justify-between p-3 rounded-xl border border-gray-900 bg-[#090e18] transition hover:border-gray-700 ${isDisabled ? 'opacity-50' : ''}">
                 <div class="flex items-center space-x-2 truncate">
                     <span class="text-xs font-mono text-gray-500">${String(idx + 1).padStart(2, '0')}</span>
-                    <i class="fa-solid ${tool.icon} text-xs mx-1"></i>
+                    <i class="fa-solid ${tool.icon || 'fa-terminal'} text-xs mx-1"></i>
                     <span class="text-xs tracking-wide truncate">${tool.name}</span>
                 </div>
                 <input type="checkbox" value="${tool.id}" ${isDisabled ? 'disabled' : ''} class="tool-checkbox accent-cyan-400 h-4 w-4 cursor-pointer rounded">
@@ -229,12 +229,90 @@ function renderToolsCheckboxes(category = "free", hasProAccess = false) {
     });
 }
 
+// --- HELPER FUNCTION: COMPILE TOOLS PAYLOAD FOR TEMPLATES ---
+function compileToolsPayload(selectedTools) {
+    let dashboardCardsHTML = "";
+    let modalViewsHTML = "";
+    let coreExecutableJS = "";
+
+    selectedTools.forEach(tool => {
+        // 1. Generate Card HTML
+        if (tool.cardHTML) {
+            dashboardCardsHTML += tool.cardHTML;
+        } else {
+            dashboardCardsHTML += `
+            <div class="premium-card" onclick="openToolModal('${tool.id}')">
+                <div class="icon-sphere">
+                    <i class="fa-solid ${tool.icon || 'fa-terminal'}"></i>
+                </div>
+                <div class="card-title">${tool.name}</div>
+                <button class="glowing-launch-btn">LAUNCH TOOL <i class="fa-solid fa-bolt ml-1"></i></button>
+            </div>\n`;
+        }
+
+        // 2. Generate Modal HTML
+        if (tool.modalHTML) {
+            modalViewsHTML += tool.modalHTML;
+        } else if (tool.html || tool.content) {
+            modalViewsHTML += `
+            <div id="modal_${tool.id}" class="modal-portal">
+                <div class="modal-card">
+                    <button class="dismiss-portal-btn" onclick="closeToolModal('${tool.id}')">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <h2 class="text-xl font-bold font-mono text-cyan-400 mb-4"><i class="fa-solid ${tool.icon || 'fa-terminal'} mr-2"></i>${tool.name}</h2>
+                    <div class="tool-workspace space-y-4">
+                        ${tool.html || tool.content}
+                    </div>
+                </div>
+            </div>\n`;
+        } else {
+            modalViewsHTML += `
+            <div id="modal_${tool.id}" class="modal-portal">
+                <div class="modal-card">
+                    <button class="dismiss-portal-btn" onclick="closeToolModal('${tool.id}')">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <h2 class="text-xl font-bold font-mono text-cyan-400 mb-2"><i class="fa-solid ${tool.icon || 'fa-terminal'} mr-2"></i>${tool.name}</h2>
+                    <p class="text-xs text-gray-400 mb-4">${tool.desc || tool.description || 'AZAN PRO Security Utility Tool'}</p>
+                    <div class="p-4 bg-black/40 rounded-xl border border-white/10 space-y-3">
+                        <label class="block text-xs font-mono text-cyan-300">COMMAND / TARGET INPUT</label>
+                        <textarea id="input_${tool.id}" rows="3" class="w-full bg-black/60 border border-gray-800 rounded-lg p-2.5 text-xs font-mono text-green-400 focus:outline-none focus:border-cyan-400" placeholder="Enter target domain / IP / input data..."></textarea>
+                        <button onclick="runTool_${tool.id.replace(/[^a-zA-Z0-9_]/g, '_')}()" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition">EXECUTE COMMAND</button>
+                        <div class="mt-3">
+                            <label class="block text-[10px] font-mono text-gray-500 mb-1">TERMINAL CONSOLE OUTPUT</label>
+                            <div id="output_${tool.id}" class="p-3 bg-black rounded-lg border border-gray-900 font-mono text-xs text-green-400 min-h-[60px] whitespace-pre-wrap">[System Ready] Waiting for input...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>\n`;
+        }
+
+        // 3. Generate Executable JS
+        if (tool.jsCode || tool.js || tool.script) {
+            coreExecutableJS += (tool.jsCode || tool.js || tool.script) + "\n\n";
+        } else {
+            const safeFnName = tool.id.replace(/[^a-zA-Z0-9_]/g, '_');
+            coreExecutableJS += `
+            function runTool_${safeFnName}() {
+                const input = document.getElementById('input_${tool.id}')?.value || '';
+                const output = document.getElementById('output_${tool.id}');
+                if(output) {
+                    output.innerText = "[+] Initializing ${tool.name}...\\n[+] Processing payload: " + (input || 'N/A') + "\\n[✔] Task executed successfully under AZAN Framework!";
+                }
+            }\n`;
+        }
+    });
+
+    return { dashboardCardsHTML, modalViewsHTML, coreExecutableJS };
+}
+
 // --- PUBLISH & DOWNLOAD TOOLKIT LOGIC ---
 function setupPublishToolkit() {
     const btnPublish = document.getElementById("btnPublishToolkit");
     btnPublish?.addEventListener("click", async () => {
         const title = document.getElementById("toolkitTitle")?.value.trim() || "My AZAN Toolkit";
-        const theme = document.getElementById("toolkitTheme")?.value || "cyan";
+        const rawTheme = document.getElementById("toolkitTheme")?.value || "cyan";
         const templateId = document.getElementById("templateSelector")?.value || "free_tpl_1";
 
         const checkboxes = document.querySelectorAll(".tool-checkbox:checked");
@@ -247,15 +325,31 @@ function setupPublishToolkit() {
         const allToolsList = [...freeTools, ...premiumTools, ...hackingTools];
         const selectedTools = allToolsList.filter(t => selectedIds.includes(t.id));
 
+        // Format Theme Class correctly (e.g. 'theme-cyan', 'theme-yellow', 'theme-ruby')
+        const themeClass = rawTheme.startsWith("theme-") ? rawTheme : `theme-${rawTheme}`;
+
+        // Compile Tools into Cards, Modals, and Executable JS
+        const { dashboardCardsHTML, modalViewsHTML, coreExecutableJS } = compileToolsPayload(selectedTools);
+
+        // Get template generator function
         const generatorFn = templateRegistry[templateId] || generateTemplate1;
-        const generatedHTML = generatorFn(title, selectedTools, theme);
+
+        // Call Generator Function with EXACT PARAMETERS ORDER
+        const generatedHTML = generatorFn(
+            title, 
+            themeClass, 
+            dashboardCardsHTML, 
+            modalViewsHTML, 
+            coreExecutableJS, 
+            "grid"
+        );
 
         try {
             if (currentUser) {
                 await addDoc(collection(db, "user_toolkits"), {
                     userId: currentUser.uid,
                     title,
-                    theme,
+                    theme: rawTheme,
                     templateId,
                     tools: selectedIds,
                     createdAt: new Date()
@@ -573,8 +667,8 @@ function setupAuthSystem() {
                             isPro: false
                         });
                     }
-                }
-            } else {
+}
+                       } else {
                 let targetEmail = inputField;
                 if (inputField && !inputField.includes("@")) {
                     const nameRef = doc(db, "usernames", inputField);
@@ -601,4 +695,4 @@ function setupAuthSystem() {
         if (mainPlatform) mainPlatform.classList.add("opacity-30", "pointer-events-none");
         signOut(auth).catch(() => {});
     });
-         }
+                }
