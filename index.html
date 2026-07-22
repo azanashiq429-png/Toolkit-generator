@@ -11,6 +11,7 @@
         .neon-glow-blue { box-shadow: 0 0 25px rgba(6, 182, 212, 0.3); border: 1px solid rgba(6, 182, 212, 0.45); }
         .neon-glow-yellow { box-shadow: 0 0 25px rgba(234, 179, 8, 0.35); border: 1px solid rgba(234, 179, 8, 0.5); }
         .neon-glow-red { box-shadow: 0 0 25px rgba(239, 68, 68, 0.35); border: 1px solid rgba(239, 68, 68, 0.5); }
+        .neon-glow-green { box-shadow: 0 0 25px rgba(34, 197, 94, 0.35); border: 1px solid rgba(34, 197, 94, 0.5); }
         .text-glow-cyan { text-shadow: 0 0 12px rgba(34, 211, 238, 0.7); }
         .text-glow-yellow { text-shadow: 0 0 10px rgba(234, 179, 8, 0.6); }
         .glass-card { background: linear-gradient(135deg, rgba(12, 19, 34, 0.9) 0%, rgba(8, 13, 24, 0.95) 100%); backdrop-filter: blur(10px); }
@@ -24,7 +25,7 @@
 </head>
 <body class="bg-[#04080f] text-gray-100 font-sans min-h-screen pb-32 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- ==================== AUTH SYSTEM CONTAINER (LOGIN / SIGNUP) ==================== -->
+    <!-- AUTH SYSTEM CONTAINER (UNCHANGED) -->
     <div id="authOverlay" class="fixed inset-0 bg-[#04080f] z-[100] flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-2xl neon-glow-blue space-y-5">
             <div class="text-center">
@@ -61,7 +62,7 @@
         </div>
     </div>
 
-    <!-- ==================== MAIN PLATFORM DASHBOARD ==================== -->
+    <!-- MAIN DASHBOARD -->
     <div id="mainPlatform" class="opacity-30 pointer-events-none transition-all duration-500">
         <!-- HEADER -->
         <header class="bg-[#080d16]/90 backdrop-blur-md p-4 flex justify-between items-center border-b border-cyan-950 sticky top-0 z-50 px-5">
@@ -75,14 +76,13 @@
                 </button>
                 <div id="topMenu" class="hidden absolute right-0 mt-3 w-52 bg-[#080d16] border border-cyan-500/20 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden z-50">
                     <div class="px-4 py-2.5 text-[10px] text-gray-500 border-b border-gray-900 font-mono truncate" id="userDisplayEmail">Offline Mode</div>
-                    <a href="#" class="flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-gray-300 hover:bg-cyan-950/40 transition border-b border-gray-900/60"><i class="fa-solid fa-wand-magic-sparkles mr-3 text-yellow-400 text-sm"></i> Theme Layout</a>
                     <button id="btnLogout" class="w-full flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-red-400 hover:bg-red-950/30 transition text-left cursor-pointer"><i class="fa-solid fa-power-off mr-3 text-sm"></i> Log out Platform</button>
                 </div>
             </div>
         </header>
 
         <main class="max-w-md mx-auto p-4 mt-2">
-            <!-- HOME TAB: GENERATOR / DASHBOARD -->
+            <!-- HOME TAB: ENGINE GENERATOR -->
             <section id="tab-home" class="tab-content active space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue">
                     <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
@@ -105,17 +105,31 @@
                             </select>
                         </div>
 
+                        <!-- TEMPLATES SELECTION BUTTONS -->
                         <div>
-                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Choose Template Style</label>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1.5">Select Dashboard Layout Template</label>
+                            <div class="grid grid-cols-2 gap-2 mb-2">
+                                <button type="button" id="btnSelectFreeTemplates" class="bg-cyan-950/80 border border-cyan-500/50 text-cyan-400 py-2.5 px-3 rounded-xl text-xs font-bold hover:bg-cyan-900 transition">
+                                    <i class="fa-solid fa-layer-group mr-1"></i> Free Templates (10)
+                                </button>
+                                <button type="button" id="btnSelectProTemplates" class="bg-yellow-950/80 border border-yellow-500/50 text-yellow-400 py-2.5 px-3 rounded-xl text-xs font-bold hover:bg-yellow-900 transition">
+                                    <i class="fa-solid fa-crown mr-1"></i> PRO Templates (10)
+                                </button>
+                            </div>
                             <select id="templateSelector" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-bold text-gray-300">
-                                <option value="grid">Template 1: Cyber Grid (3x3)</option>
-                                <option value="list">Template 2: Vertical List Stack</option>
-                                <option value="template3">Template 3: Neo-Minimal Compact (VIP 👑)</option>
+                                <!-- Options dynamically rendered via JS -->
                             </select>
                         </div>
-                        
+
+                        <!-- CATEGORIZED TOOL SELECTION BUTTONS -->
                         <div>
-                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-2">Select Modules & Scripts (<span class="text-cyan-400">25 Available</span>)</label>
+                            <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-2">Select Tool Modules Category</label>
+                            <div class="grid grid-cols-3 gap-1.5 mb-3">
+                                <button type="button" id="tabFreeTools" class="tool-cat-btn active bg-cyan-600 text-black py-2 rounded-lg text-[10px] font-black uppercase">Free Tools</button>
+                                <button type="button" id="tabProTools" class="tool-cat-btn bg-[#0d1321] text-yellow-400 border border-yellow-500/30 py-2 rounded-lg text-[10px] font-black uppercase">Premium 👑</button>
+                                <button type="button" id="tabHackingTools" class="tool-cat-btn bg-[#0d1321] text-red-400 border border-red-500/30 py-2 rounded-lg text-[10px] font-black uppercase">Hacking ☠️</button>
+                            </div>
+
                             <div id="toolsCheckboxContainer" class="space-y-2 max-h-72 overflow-y-auto pr-1 custom-scroll"></div>
                         </div>
 
@@ -125,7 +139,6 @@
                     </div>
                 </div>
 
-                <!-- LIVE CLOUD TOOLKITS CONTAINER -->
                 <div id="savedToolkitsContainer" class="mt-4 space-y-3"></div>
             </section>
 
@@ -148,6 +161,19 @@
                                 <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-widest block">Resource Link #1</span>
                                 <input type="text" placeholder="Tool Display Name" class="link-name w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none">
                                 <input type="url" placeholder="Target Link URL (https://...)" class="link-url w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-2.5 text-xs focus:outline-none font-mono text-cyan-500">
+                                
+                                <!-- ICON SELECTION & FILE PICKER -->
+                                <div class="grid grid-cols-2 gap-2 pt-1">
+                                    <select class="link-icon-select bg-[#0d1321] border border-cyan-950 rounded-xl p-2 text-xs text-gray-300">
+                                        <option value="fa-arrow-up-right-from-square">Default Arrow</option>
+                                        <option value="fa-globe">Globe / Web</option>
+                                        <option value="fa-terminal">Terminal</option>
+                                        <option value="fa-shield-halved">Shield</option>
+                                        <option value="fa-bolt">Lightning</option>
+                                        <option value="fa-download">Download</option>
+                                    </select>
+                                    <input type="file" accept="image/*" class="link-custom-icon bg-[#0d1321] border border-cyan-950 rounded-xl p-1 text-[10px] text-gray-400">
+                                </div>
                             </div>
                         </div>
 
@@ -162,35 +188,52 @@
                 </div>
             </section>
 
-            <!-- VIDEO TUTORIAL TAB -->
+            <!-- VIDEO TUTORIAL TAB (DESIGNS MATCHING SCREENSHOT 3) -->
             <section id="tab-tutorial" class="tab-content space-y-4">
-                <div class="glass-card p-5 rounded-2xl neon-glow-blue">
-                    <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
-                        <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-circle-play mr-2"></i> Video Tutorial Gateway</h2>
-                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">FREE ACCESS</span>
+                <div class="glass-card p-5 rounded-2xl neon-glow-blue space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-900 pb-3">
+                        <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-circle-play mr-2"></i> AZAN VIP Exploit Guide</h2>
+                        <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">1080P HD</span>
                     </div>
 
-                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
-                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
-                            <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
-                            <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] text-gray-400 px-1.5 py-0.5 rounded font-mono">10:45</span>
-                        </div>
-                        <div class="space-y-1">
-                            <h4 class="text-xs font-bold text-gray-200 font-mono">01. Configure Termux & Linux Environment</h4>
-                            <p class="text-[10px] text-gray-400 font-mono">Learn how to route Termux custom ports to AZAN Cloud gateway node securely.</p>
+                    <!-- MAIN VIDEO PLAYER BOX -->
+                    <div id="mainVideoPlayer" class="h-48 bg-[#090e18] rounded-2xl border border-cyan-500/30 flex items-center justify-center relative overflow-hidden group cursor-pointer shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+                        <span class="absolute top-3 right-3 bg-cyan-950/80 text-cyan-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded border border-cyan-800">1080P HD</span>
+                        <div class="w-16 h-16 rounded-full border-2 border-cyan-400/80 flex items-center justify-center bg-cyan-950/40 text-cyan-400 group-hover:scale-110 group-hover:border-cyan-300 transition shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                            <i class="fa-solid fa-play text-2xl ml-1"></i>
                         </div>
                     </div>
 
-                    <div class="bg-[#090e18] p-3 rounded-xl border border-cyan-950/40 space-y-3 relative overflow-hidden">
-                        <div class="h-36 bg-[#0d1321] rounded-lg border border-gray-900 flex items-center justify-center relative cursor-pointer hover:border-cyan-500/50 transition">
-                            <i class="fa-brands fa-youtube text-4xl text-red-500"></i>
-                            <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] text-gray-400 px-1.5 py-0.5 rounded font-mono">14:20</span>
+                    <div class="text-center space-y-1">
+                        <h3 class="text-base font-bold text-gray-100 font-mono">AZAN VIP Exploit Guide</h3>
+                        <p class="text-xs text-gray-400">Watch this walkthrough video to successfully deploy and pair the security terminals.</p>
+                    </div>
+
+                    <!-- VIDEO METRICS GRID -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div class="bg-[#080d16] p-3 rounded-xl border border-cyan-950/60">
+                            <span class="text-[9px] text-gray-500 uppercase font-mono font-bold block">Video Title</span>
+                            <span class="text-xs font-bold text-gray-200 truncate block mt-0.5">Bypassing Secure Ports</span>
                         </div>
-                        <div class="space-y-1">
-                            <h4 class="text-xs font-bold text-gray-200 font-mono">02. Advanced Custom Script Injection</h4>
-                            <p class="text-[10px] text-gray-400 font-mono">Deploy modular front-end packages and toolkit assets under custom subdomains.</p>
+                        <div class="bg-[#080d16] p-3 rounded-xl border border-cyan-950/60">
+                            <span class="text-[9px] text-gray-500 uppercase font-mono font-bold block">Duration</span>
+                            <span class="text-xs font-bold text-gray-200 block mt-0.5">04 Mins : 18 Secs</span>
+                        </div>
+                        <div class="bg-[#080d16] p-3 rounded-xl border border-cyan-950/60">
+                            <span class="text-[9px] text-gray-500 uppercase font-mono font-bold block">Uploaded By</span>
+                            <span class="text-xs font-bold text-cyan-400 block mt-0.5">Azan Official Tech</span>
+                        </div>
+                        <div class="bg-[#080d16] p-3 rounded-xl border border-cyan-950/60">
+                            <span class="text-[9px] text-gray-500 uppercase font-mono font-bold block">Verified Safe</span>
+                            <span class="text-xs font-bold text-emerald-400 block mt-0.5"><i class="fa-solid fa-shield-halved mr-1"></i> Yes (SSL Encrypted)</span>
                         </div>
                     </div>
+
+                    <!-- WHATSAPP CHANNEL BUTTON -->
+                    <a href="https://whatsapp.com/channel/0029VaXXXXXXXXXX" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs tracking-wider py-4 rounded-xl flex items-center justify-center space-x-2 shadow-lg transition active:scale-95 uppercase">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>FOLLOW OFFICIAL WHATSAPP CHANNEL</span>
+                    </a>
                 </div>
             </section>
 
@@ -206,7 +249,7 @@
                         Download the standalone **AZAN Tools Linux binary** and **Android APK bundle** to host tools locally via terminal bypass.
                     </p>
 
-                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-emerald-950/50 border border-emerald-900/60 rounded-xl text-emerald-400 text-lg">
                                 <i class="fa-brands fa-android"></i>
@@ -218,29 +261,26 @@
                         </div>
                         <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
                     </div>
-
-                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-2 bg-blue-950/50 border border-blue-900/60 rounded-xl text-blue-400 text-lg">
-                                <i class="fa-solid fa-terminal"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-200">Termux Install Script</h4>
-                                <p class="text-[9px] text-gray-500 font-mono">setup.sh • Automated Environment</p>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
-                    </div>
                 </div>
             </section>
 
-            <!-- VIP PRO TERMINAL TAB -->
+            <!-- VIP PRO TERMINAL TAB WITH SECRET KEY ACTIVATION -->
             <section id="tab-pro" class="tab-content space-y-5">
                 <div class="text-center space-y-1 py-2">
                     <h2 class="text-lg font-black text-yellow-400 tracking-widest text-glow-yellow uppercase"><i class="fa-solid fa-crown mr-1"></i> VIP Upgrade Portal</h2>
-                    <p class="text-[11px] text-gray-400 font-mono">Unlock advanced cloud systems and complete scripting features</p>
+                    <p class="text-[11px] text-gray-400 font-mono">Unlock advanced cloud systems and complete hacking/premium tools suite</p>
                 </div>
-<!-- 1 Month Card -->
+
+                <!-- SECRET PRO KEY INPUT BOX -->
+                <div class="glass-card p-4 rounded-2xl neon-glow-yellow space-y-3">
+                    <h3 class="text-xs font-bold text-yellow-400 uppercase tracking-wider"><i class="fa-solid fa-key mr-1.5"></i> Activate Pro Access Key</h3>
+                    <div class="flex space-x-2">
+                        <input type="text" id="proSecretKeyInput" placeholder="Paste Secret VIP License Key..." class="flex-grow bg-[#0d1321] border border-yellow-500/40 rounded-xl p-3 text-xs font-mono text-yellow-300 focus:outline-none focus:border-yellow-400">
+                        <button id="btnActivateProKey" class="bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black text-xs px-4 rounded-xl uppercase active:scale-95 transition cursor-pointer">UNLOCK</button>
+                    </div>
+                </div>
+
+                <!-- 1 Month Card -->
                 <div class="glass-card p-5 rounded-2xl border border-gray-900 relative transition hover:border-yellow-600/30 overflow-hidden">
                     <div class="flex justify-between items-start">
                         <div>
@@ -252,13 +292,8 @@
                             <p class="text-[9px] text-gray-500 font-mono">Single Payment</p>
                         </div>
                     </div>
-                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
-                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Unlock all 25+ PRO Scripts</li>
-                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Cloud Terminal ID Authorization</li>
-                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Basic 30-Day Storage Backup</li>
-                    </ul>
-                    <button class="w-full bg-[#111928] hover:bg-yellow-500 hover:text-slate-950 border border-yellow-500/20 text-yellow-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md">
-                        ACTIVATE GATEWAY NODE
+                    <button class="btn-buy-wa w-full bg-[#111928] hover:bg-yellow-500 hover:text-slate-950 border border-yellow-500/20 text-yellow-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md" data-plan="1 Month Basic" data-price="Rs. 300">
+                        BUY VIA WHATSAPP
                     </button>
                 </div>
 
@@ -274,13 +309,8 @@
                             <p class="text-[9px] text-gray-400 font-mono">Saves Rs. 200</p>
                         </div>
                     </div>
-                    <ul class="mt-4 space-y-2 border-t border-yellow-500/10 pt-3 text-[11px] text-gray-300 font-mono">
-                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> All 25+ Premium PRO Tools</li>
-                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Full Access to Video Tutorials</li>
-                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Unlimited Links Maker Configurations</li>
-                    </ul>
-                    <button class="w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 active:scale-95 transition cursor-pointer uppercase shadow-lg">
-                        BOOT PRO GATEWAY
+                    <button class="btn-buy-wa w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 active:scale-95 transition cursor-pointer uppercase shadow-lg" data-plan="3 Months Cyber Stack" data-price="Rs. 1000">
+                        BUY VIA WHATSAPP
                     </button>
                 </div>
 
@@ -296,13 +326,8 @@
                             <p class="text-[9px] text-gray-500 font-mono">Ultimate Pack</p>
                         </div>
                     </div>
-                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
-                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> Complete Suite + Future Beta Tools</li>
-                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> App Downloader Client Unlimited Access</li>
-                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> 24/7 Priority Cloud Dev Node Support</li>
-                    </ul>
-                    <button class="w-full bg-[#111928] hover:bg-red-600 hover:text-white border border-red-500/20 text-red-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md">
-                        DEPLOY ENTERPRISE INSTANCE
+                    <button class="btn-buy-wa w-full bg-[#111928] hover:bg-red-600 hover:text-white border border-red-500/20 text-red-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md" data-plan="1 Year Ultimate Dev" data-price="Rs. 3000">
+                        BUY VIA WHATSAPP
                     </button>
                 </div>
             </section>
@@ -319,7 +344,5 @@
     </div>
 
     <script type="module" src="app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>eruda.init();</script>
 </body>
-    </html>
+                </html>
