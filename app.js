@@ -1,4 +1,4 @@
- // --- 1. TOOL DATA IMPORTS ---
+// --- 1. TOOL DATA IMPORTS ---
 import { freeTools } from './free-tools.js';
 import { premiumTools } from './premium-tools.js';
 import { hackingTools } from './hacking-tools.js';
@@ -69,6 +69,19 @@ const templateRegistry = {
     'pro_tpl_10': generateTemplate10
 };
 
+// Helper Function: Dashboard Unlocker
+function unlockDashboard(userLabel) {
+    const authOverlay = document.getElementById("authOverlay");
+    const mainPlatform = document.getElementById("mainPlatform");
+    const userDisplayEmail = document.getElementById("userDisplayEmail");
+
+    if (authOverlay) authOverlay.classList.add("hidden");
+    if (mainPlatform) mainPlatform.classList.remove("opacity-30", "pointer-events-none");
+    if (userDisplayEmail && userLabel) {
+        userDisplayEmail.innerText = userLabel;
+    }
+}
+
 // --- DOM CONTENT LOADED ---
 document.addEventListener("DOMContentLoaded", () => {
     setupTemplatesDropdown("free");
@@ -83,38 +96,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // --- AUTH STATE MONITOR ---
 onAuthStateChanged(auth, async (user) => {
-    const authOverlay = document.getElementById("authOverlay");
-    const mainPlatform = document.getElementById("mainPlatform");
     const userDisplayEmail = document.getElementById("userDisplayEmail");
 
     if (user) {
         currentUser = user;
-        authOverlay?.classList.add("hidden");
-        mainPlatform?.classList.remove("opacity-30", "pointer-events-none");
+        unlockDashboard();
         
         if (userDisplayEmail) {
             userDisplayEmail.innerText = `Loading Session...`;
-            const q = query(collection(db, "usernames"), where("email", "==", user.email));
-            const snap = await getDocs(q);
-            if (!snap.empty) {
-                const userData = snap.docs[0].data();
-                isUserPro = userData.isPro === true;
-                userDisplayEmail.innerText = `@${snap.docs[0].id} (${isUserPro ? '👑 VIP PRO' : 'Online'})`;
-            } else {
+            try {
+                const q = query(collection(db, "usernames"), where("email", "==", user.email));
+                const snap = await getDocs(q);
+                if (!snap.empty) {
+                    const userData = snap.docs[0].data();
+                    isUserPro = userData.isPro === true;
+                    userDisplayEmail.innerText = `@${snap.docs[0].id} (${isUserPro ? '👑 VIP PRO' : 'Online'})`;
+                } else {
+                    userDisplayEmail.innerText = `${user.email}`;
+                }
+            } catch (e) {
                 userDisplayEmail.innerText = `${user.email}`;
             }
         }
         renderToolsCheckboxes(activeToolCategory, isUserPro);
         fetchUserToolkits(user.uid);
-
     } else {
         currentUser = null;
         isUserPro = false;
-        authOverlay?.classList.remove("hidden");
-        mainPlatform?.classList.add("opacity-30", "pointer-events-none");
-        
-        const container = document.getElementById("savedToolkitsContainer");
-        if (container) container.innerHTML = "";
     }
 });
 
@@ -243,7 +251,6 @@ function setupPublishToolkit() {
         const generatedHTML = generatorFn(title, selectedTools, theme);
 
         try {
-            // 1. Save to Firestore
             if (currentUser) {
                 await addDoc(collection(db, "user_toolkits"), {
                     userId: currentUser.uid,
@@ -255,7 +262,6 @@ function setupPublishToolkit() {
                 });
             }
 
-            // 2. Download Standalone Local HTML File
             const blob = new Blob([generatedHTML], { type: "text/html" });
             const dynamicTrigger = document.createElement("a");
             dynamicTrigger.href = URL.createObjectURL(blob);
@@ -417,7 +423,6 @@ function setupDynamicLinkListeners() {
         if (deleteBtn) deleteBtn.closest(".link-row")?.remove();
     });
 
-    // Links Publisher Button Event Handler
     document.addEventListener("click", (e) => {
         const target = e.target.closest("button");
         if (target && target.innerText && target.innerText.includes("PUBLISH LIVE UNDER AZAN BRAND")) {
@@ -473,7 +478,7 @@ function setupProKeyAndWhatsApp() {
     document.querySelectorAll(".btn-buy-wa").forEach(btn => {
         btn.addEventListener("click", () => {
             const plan = btn.getAttribute("data-plan");
-    const price = btn.getAttribute("data-price");
+            const price = btn.getAttribute("data-price");
             const waNumber = "923138317139";
             const text = encodeURIComponent(`Assalam-o-Alaikum Admin! Mujhe AZAN Toolkit Generator ka PRO Package buy karna hai.\nPlan: ${plan}\nPrice: ${price}\nKINDLY SEND PAYMENT DETAILS.`);
             window.open(`https://wa.me/${waNumber}?text=${text}`, "_blank");
@@ -506,7 +511,7 @@ function setupNavigation() {
     window.addEventListener("click", () => topMenu?.classList.add("hidden"));
 }
 
-// --- COMPLETE AUTHENTICATION SYSTEM ---
+// --- MERGED LOGIN & CREATE ACCOUNT SYSTEM ---
 function setupAuthSystem() {
     const authForm = document.getElementById("authForm");
     const toggleBtn = document.getElementById("btnToggleAuthMode");
@@ -516,14 +521,15 @@ function setupAuthSystem() {
     const usernameContainer = document.getElementById("usernameFieldContainer");
     const emailLabel = document.getElementById("emailFieldLabel");
 
+    // TOGGLE LOGIN / SIGNUP MODE
     toggleBtn?.addEventListener("click", () => {
         authForm?.reset();
         if (authMode === "login") {
             authMode = "signup";
             if(authTitle) authTitle.innerText = "CREATE TERMINAL ID";
             if(authSubtitle) authSubtitle.innerText = "Register your profile into AZAN cloud servers";
-            if(submitBtn) submitBtn.innerText = "GENERATE SECURITY ACCOUNT";
-            if(toggleBtn) toggleBtn.innerText = "Already have an ID? Authentication Portal";
+            if(submitBtn) submitBtn.innerText = "CREATE ACCOUNT & ACCESS";
+            if(toggleBtn) toggleBtn.innerText = "Already have an account? Terminal Login";
             usernameContainer?.classList.remove("hidden");
             const authUsername = document.getElementById("authUsername");
             if(authUsername) authUsername.required = true;
@@ -541,155 +547,58 @@ function setupAuthSystem() {
         }
     });
 
+    // FORM SUBMISSION (LOCAL UNLOCK + FIREBASE)
     authForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const inputField = document.getElementById("authEmail")?.value.trim().toLowerCase();
         const password = document.getElementById("authPassword")?.value;
 
+        // Immediately Unlock Dashboard Interface
+        unlockDashboard(inputField || "User Terminal");
+
+        // Attempt Firebase Background Sync
         try {
             if (authMode === "signup") {
                 const username = document.getElementById("authUsername")?.value.trim().toLowerCase();
                 const email = inputField;
 
-                if (!/^[a-zA-Z0-9_]{3,15}$/.test(username)) {
-                    return alert("Username must be 3-15 chars (letters, numbers, underscore only).");
+                if (username && /^[a-zA-Z0-9_]{3,15}$/.test(username)) {
+                    const nameRef = doc(db, "usernames", username);
+                    const nameSnap = await getDoc(nameRef);
+                    if (!nameSnap.exists()) {
+                        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                        await setDoc(doc(db, "usernames", username), {
+                            email: email,
+                            uid: userCredential.user.uid,
+                            isPro: false
+                        });
+                    }
                 }
-
-                const nameRef = doc(db, "usernames", username);
-                const nameSnap = await getDoc(nameRef);
-                if (nameSnap.exists()) {
-                    return alert("This username is already claimed! Choose another.");
-                }
-
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                
-                await setDoc(doc(db, "usernames", username), {
-                    email: email,
-                    uid: userCredential.user.uid,
-                    isPro: false
-                });
-
-                alert("Terminal Profile Registered Successfully!");
-            } 
-            else {
+            } else {
                 let targetEmail = inputField;
-
-                if (!inputField.includes("@")) {
+                if (inputField && !inputField.includes("@")) {
                     const nameRef = doc(db, "usernames", inputField);
                     const nameSnap = await getDoc(nameRef);
-                    
-                    if (!nameSnap.exists()) {
-                        return alert("Username does not exist in security databases!");
+                    if (nameSnap.exists()) {
+                        targetEmail = nameSnap.data().email;
                     }
-                    targetEmail = nameSnap.data().email;
                 }
-
-                await signInWithEmailAndPassword(auth, targetEmail, password);
-                alert("Gateway Access Granted!");
+                if (targetEmail && password) {
+                    await signInWithEmailAndPassword(auth, targetEmail, password);
+                }
             }
-            authForm.reset();
         } catch (error) {
-            console.error(error);
-            alert(`Authentication Rejected: ${error.message}`);
+            console.log("Offline/Direct Mode active. Firebase notice:", error.message);
         }
+        authForm.reset();
     });
 
+    // LOGOUT ACTION
     document.getElementById("btnLogout")?.addEventListener("click", () => {
-        signOut(auth).then(() => alert("Terminal Session Disconnected."));
+        const authOverlay = document.getElementById("authOverlay");
+        const mainPlatform = document.getElementById("mainPlatform");
+        if (authOverlay) authOverlay.classList.remove("hidden");
+        if (mainPlatform) mainPlatform.classList.add("opacity-30", "pointer-events-none");
+        signOut(auth).catch(() => {});
     });
-                                                 }
-// ==================== DOM ELEMENTS ====================
-const authOverlay = document.getElementById('authOverlay');
-const mainPlatform = document.getElementById('mainPlatform');
-const authForm = document.getElementById('authForm');
-const authTitle = document.getElementById('authTitle');
-const authSubtitle = document.getElementById('authSubtitle');
-const btnAuthSubmit = document.getElementById('btnAuthSubmit');
-const btnToggleAuthMode = document.getElementById('btnToggleAuthMode');
-const usernameFieldContainer = document.getElementById('usernameFieldContainer');
-const userDisplayEmail = document.getElementById('userDisplayEmail');
-
-const menuBtn = document.getElementById('menuBtn');
-const topMenu = document.getElementById('topMenu');
-const btnLogout = document.getElementById('btnLogout');
-
-let isSignUpMode = false;
-
-// ==================== TOGGLE LOGIN / SIGNUP MODE ====================
-btnToggleAuthMode.addEventListener('click', () => {
-    isSignUpMode = !isSignUpMode;
-
-    if (isSignUpMode) {
-        authTitle.textContent = "CREATE TERMINAL ID";
-        authSubtitle.textContent = "Register credentials to access AZAN gateway";
-        btnAuthSubmit.textContent = "CREATE ACCOUNT & ACCESS";
-        btnToggleAuthMode.textContent = "Already have an account? Terminal Login";
-        usernameFieldContainer.classList.remove('hidden');
-    } else {
-        authTitle.textContent = "TERMINAL ACCESS LOGIN";
-        authSubtitle.textContent = "Provide credentials to boot AZAN tools gateway";
-        btnAuthSubmit.textContent = "AUTHENTICATE SECURITY GATEWAY";
-        btnToggleAuthMode.textContent = "Don't have an account? Create Terminal ID";
-        usernameFieldContainer.classList.add('hidden');
-    }
-});
-
-// ==================== AUTH FORM SUBMIT LOGIC ====================
-authForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const emailInput = document.getElementById('authEmail').value;
-
-    // Set User Email in Top Header
-    if (userDisplayEmail) {
-        userDisplayEmail.textContent = emailInput || "User Terminal";
-    }
-
-    // Hide Auth Overlay & Unlock Main Platform
-    authOverlay.classList.add('hidden');
-    mainPlatform.classList.remove('opacity-30', 'pointer-events-none');
-});
-
-// ==================== TOP MENU TOGGLE ====================
-menuBtn.addEventListener('click', () => {
-    topMenu.classList.toggle('hidden');
-});
-
-// ==================== LOGOUT LOGIC ====================
-btnLogout.addEventListener('click', () => {
-    topMenu.classList.add('hidden');
-    
-    // Lock Platform & Show Auth Overlay
-    authOverlay.classList.remove('hidden');
-    mainPlatform.classList.add('opacity-30', 'pointer-events-none');
-    
-    // Reset Form
-    authForm.reset();
-});
-
-// ==================== TAB NAVIGATION LOGIC ====================
-const navButtons = document.querySelectorAll('.nav-btn');
-const tabContents = document.querySelectorAll('.tab-content');
-
-navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const targetTab = button.id.replace('nav-', 'tab-');
-
-        // Hide all tabs
-        tabContents.forEach(tab => tab.classList.remove('active'));
-
-        // Reset nav button colors
-        navButtons.forEach(btn => {
-            btn.classList.remove('text-cyan-400');
-            btn.classList.add('text-gray-500');
-        });
-
-        // Show target tab & highlight button
-        const activeTab = document.getElementById(targetTab);
-        if (activeTab) {
-            activeTab.classList.add('active');
-            button.classList.remove('text-gray-500');
-            button.classList.add('text-cyan-400');
-        }
-    });
-});
+         }
