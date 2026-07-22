@@ -33,6 +33,13 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             --text-muted: #94a3b8;
         }
 
+        .theme-cyan {
+            --primary: #22d3ee;
+            --primary-glow: rgba(34, 211, 238, 0.5);
+            --secondary: #0891b2;
+            --border-glow: rgba(34, 211, 238, 0.3);
+        }
+
         .theme-yellow {
             --primary: #facc15;
             --primary-glow: rgba(250, 204, 21, 0.5);
@@ -47,7 +54,7 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             --border-glow: rgba(239, 68, 68, 0.3);
         }
 
-        /* Custom Scrollbar for heavy look */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
@@ -57,7 +64,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
 
         body {
             background-color: var(--bg-deep);
-            /* Futuristic Grid Background */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -71,36 +77,41 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 40px 20px;
+            padding: 30px 15px;
             overflow-x: hidden;
         }
 
-        /* Main Dashboard Area */
+        /* Main Dashboard Canvas */
         .dashboard-canvas {
             width: 100%;
             max-width: 1280px;
             background: var(--bg-glass);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255,255,255,0.02);
             border-radius: 32px;
-            padding: 50px 40px;
+            padding: 40px 25px;
             position: relative;
             z-index: 10;
         }
 
-        header { text-align: center; margin-bottom: 50px; position: relative; }
+        header { text-align: center; margin-bottom: 40px; position: relative; }
 
         h1 {
             font-family: 'Rajdhani', sans-serif;
             color: #ffffff;
-            font-size: 46px;
+            font-size: 38px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2.5px;
             text-shadow: 0 0 30px var(--primary-glow), 0 0 10px var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 46px; }
+            .dashboard-canvas { padding: 50px 40px; }
         }
 
         .system-badge {
@@ -108,12 +119,12 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             align-items: center;
             gap: 8px;
             color: #ffffff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             border: 1px solid var(--accent);
-            padding: 6px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
             background: rgba(234, 179, 8, 0.15);
             box-shadow: 0 0 20px rgba(234, 179, 8, 0.3), inset 0 0 10px rgba(234, 179, 8, 0.2);
@@ -124,19 +135,19 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         .tools-3x3-grid {
             display: grid;
             grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 24px;
+            gap: 20px;
         }
-        @media (min-width: 768px) { .tools-3x3-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 640px) { .tools-3x3-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .tools-3x3-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
-        .tools-list-stack { display: flex; flex-direction: column; gap: 18px; }
+        .tools-list-stack { display: flex; flex-direction: column; gap: 16px; }
 
         /* Premium Cards */
         .premium-card {
             background: linear-gradient(145deg, var(--bg-card) 0%, rgba(5, 8, 15, 0.8) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 30px 20px;
+            padding: 26px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -144,10 +155,9 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             position: relative;
             cursor: pointer;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Card Hover Effects */
         .premium-card::before {
             content: '';
             position: absolute;
@@ -160,60 +170,58 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         .premium-card:hover::before { left: 150%; }
 
         .premium-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-6px) scale(1.01);
             border-color: var(--primary);
             box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 30px var(--primary-glow);
             background: linear-gradient(145deg, rgba(17, 24, 39, 0.9) 0%, rgba(5, 8, 15, 0.9) 100%);
         }
 
-        /* List View adjustments */
         .tools-list-stack .premium-card {
             flex-direction: row; justify-content: space-between;
-            text-align: left; padding: 20px 28px;
+            text-align: left; padding: 18px 24px;
         }
 
         .icon-sphere {
-            width: 64px; height: 64px;
-            border-radius: 20px;
+            width: 58px; height: 58px;
+            border-radius: 18px;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; align-items: center; justify-content: center;
             color: var(--primary);
-            font-size: 28px; margin-bottom: 18px;
+            font-size: 24px; margin-bottom: 14px;
             box-shadow: inset 0 0 15px rgba(255,255,255,0.02);
-            transition: all 0.4s;
+            transition: all 0.35s;
         }
 
         .premium-card:hover .icon-sphere {
             background: var(--primary);
             color: #000;
             border-color: #fff;
-            box-shadow: 0 0 25px var(--primary-glow), inset 0 0 10px rgba(255,255,255,0.8);
-            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 25px var(--primary-glow);
+            transform: scale(1.08) rotate(4deg);
         }
 
-        .tools-list-stack .icon-sphere { margin-bottom: 0; margin-right: 20px; }
+        .tools-list-stack .icon-sphere { margin-bottom: 0; margin-right: 18px; }
 
         .card-title {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 20px; font-weight: 700;
+            font-size: 19px; font-weight: 700;
             color: #ffffff; letter-spacing: 1px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
-        .tools-list-stack .card-title { margin-bottom: 0; flex-grow: 1; font-size: 22px; }
+        .tools-list-stack .card-title { margin-bottom: 0; flex-grow: 1; font-size: 20px; }
 
         .glowing-launch-btn {
             background: transparent;
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 10px 24px;
-            border-radius: 14px;
-            font-weight: 800; font-size: 12px;
+            padding: 9px 22px;
+            border-radius: 12px;
+            font-weight: 800; font-size: 11px;
             cursor: pointer; text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s;
-            position: relative; overflow: hidden;
         }
 
         .glowing-launch-btn:hover {
@@ -223,76 +231,64 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         }
 
         /* -------------------------------------------
-           HEAVY FULL-WINDOW MODAL (The Workspace) 
+           FULL-WINDOW WORKSPACE MODAL
            ------------------------------------------- */
         .modal-portal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 4, 10, 0.85);
+            inset: 0;
+            width: 100vw;
+            height: 100dvh;
+            background: rgba(2, 4, 10, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            justify-content: center; align-items: center;
+            justify-content: center;
+            align-items: center;
             z-index: 9999; 
-            padding: 2vh 2vw; /* Slight margin from screen edges */
+            padding: 12px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
+        @media (min-width: 640px) { .modal-portal { padding: 24px; } }
+
         .modal-portal.active {
             display: flex;
             opacity: 1;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-card {
             background: linear-gradient(180deg, #090e1a 0%, #03060c 100%);
             border: 1px solid var(--primary);
-            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow), inset 0 0 20px rgba(34, 211, 238, 0.05);
-            
-            /* FULL WINDOW SIZING */
+            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow);
             width: 100%;
-            height: 100%;
-            max-width: 1800px; /* Optional cap on ultra-wide screens */
+            max-width: 1200px;
+            max-height: 90dvh;
             border-radius: 24px;
-            
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
-            
-            transform: scale(0.95) translateY(20px);
-            opacity: 0;
-            animation: workspacePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+            overflow-y: auto; /* Internal Scrolling Fix */
+            padding: 30px 24px;
         }
 
-        @keyframes workspacePop {
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* Inner Content area of the Full-Screen Tool */
-        .modal-content-wrapper {
-            flex-grow: 1;
-            padding: 40px;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
-        }
+        @media (min-width: 768px) { .modal-card { padding: 40px 35px; } }
 
         .dismiss-portal-btn {
-            position: absolute; top: 20px; right: 24px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             color: #ef4444; 
-            width: 44px; height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 12px;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 20px; cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
             transition: all 0.3s;
             z-index: 100;
         }
@@ -300,16 +296,16 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         .dismiss-portal-btn:hover { 
             background: #ef4444;
             color: #fff;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
             transform: rotate(90deg);
         }
 
-        /* Auto-Styling for Inputs inside the Heavy Tool Window */
+        /* Input Controls Styling Inside Modal */
         .modal-card input, .modal-card textarea, .modal-card select {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #fff;
-            padding: 12px 18px;
+            padding: 12px 16px;
             border-radius: 12px;
             transition: all 0.3s;
         }
@@ -335,7 +331,7 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         </div>
     </div>
 
-    <!-- Modals are injected here. Make sure your modalViewsHTML wraps content in <div class="modal-content-wrapper"> if you want custom scrolling inside -->
+    <!-- Modals area -->
     ${modalViewsHTML}
 
     <script>
@@ -343,7 +339,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             const modal = document.getElementById('modal_' + toolId);
             if(modal) {
                 modal.classList.add('active');
-                // Prevent background scrolling when workspace is open
                 document.body.style.overflow = 'hidden'; 
             }
         }
@@ -356,7 +351,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             }
         }
 
-        // Close on clicking outside the workspace window
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-portal')) {
                 event.target.classList.remove('active');
@@ -368,4 +362,4 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
     </script>
 </body>
 </html>`;
-    }
+}
