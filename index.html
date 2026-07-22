@@ -25,7 +25,7 @@
 </head>
 <body class="bg-[#04080f] text-gray-100 font-sans min-h-screen pb-32 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- AUTH SYSTEM CONTAINER (UNCHANGED) -->
+    <!-- ==================== AUTH SYSTEM CONTAINER (LOGIN / SIGNUP) ==================== -->
     <div id="authOverlay" class="fixed inset-0 bg-[#04080f] z-[100] flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md p-6 rounded-2xl neon-glow-blue space-y-5">
             <div class="text-center">
@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- ==================== MAIN PLATFORM DASHBOARD ==================== -->
     <div id="mainPlatform" class="opacity-30 pointer-events-none transition-all duration-500">
         <!-- HEADER -->
         <header class="bg-[#080d16]/90 backdrop-blur-md p-4 flex justify-between items-center border-b border-cyan-950 sticky top-0 z-50 px-5">
@@ -76,6 +76,7 @@
                 </button>
                 <div id="topMenu" class="hidden absolute right-0 mt-3 w-52 bg-[#080d16] border border-cyan-500/20 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden z-50">
                     <div class="px-4 py-2.5 text-[10px] text-gray-500 border-b border-gray-900 font-mono truncate" id="userDisplayEmail">Offline Mode</div>
+                    <a href="#" class="flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-gray-300 hover:bg-cyan-950/40 transition border-b border-gray-900/60"><i class="fa-solid fa-wand-magic-sparkles mr-3 text-yellow-400 text-sm"></i> Theme Layout</a>
                     <button id="btnLogout" class="w-full flex items-center px-4 py-3.5 text-xs font-bold tracking-wide text-red-400 hover:bg-red-950/30 transition text-left cursor-pointer"><i class="fa-solid fa-power-off mr-3 text-sm"></i> Log out Platform</button>
                 </div>
             </div>
@@ -117,7 +118,7 @@
                                 </button>
                             </div>
                             <select id="templateSelector" class="w-full bg-[#0d1321] border border-cyan-950 rounded-xl p-3 text-sm focus:outline-none focus:border-cyan-400 font-bold text-gray-300">
-                                <!-- Options dynamically rendered via JS -->
+                                <!-- Dynamic Options via app.js -->
                             </select>
                         </div>
 
@@ -139,6 +140,7 @@
                     </div>
                 </div>
 
+                <!-- LIVE CLOUD TOOLKITS CONTAINER -->
                 <div id="savedToolkitsContainer" class="mt-4 space-y-3"></div>
             </section>
 
@@ -188,7 +190,7 @@
                 </div>
             </section>
 
-            <!-- VIDEO TUTORIAL TAB (DESIGNS MATCHING SCREENSHOT 3) -->
+            <!-- VIDEO TUTORIAL TAB -->
             <section id="tab-tutorial" class="tab-content space-y-4">
                 <div class="glass-card p-5 rounded-2xl neon-glow-blue space-y-4">
                     <div class="flex items-center justify-between border-b border-gray-900 pb-3">
@@ -239,17 +241,18 @@
 
             <!-- DOWNLOAD TAB -->
             <section id="tab-download" class="tab-content space-y-4">
-                <div class="glass-card p-5 rounded-2xl neon-glow-blue">
-                    <div class="flex items-center justify-between mb-4 border-b border-gray-900 pb-3">
+                <div class="glass-card p-5 rounded-2xl neon-glow-blue space-y-3">
+                    <div class="flex items-center justify-between border-b border-gray-900 pb-3">
                         <h2 class="text-sm font-black tracking-wider text-cyan-400 uppercase"><i class="fa-solid fa-circle-arrow-down mr-2"></i> Client App Downloader</h2>
                         <span class="bg-cyan-950 text-cyan-400 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded border border-cyan-900 uppercase">FREE DOWNLOAD</span>
                     </div>
 
                     <p class="text-xs text-gray-400 font-mono leading-relaxed bg-[#090e18] p-3 rounded-xl border border-gray-900">
-                        Download the standalone **AZAN Tools Linux binary** and **Android APK bundle** to host tools locally via terminal bypass.
+            Download the standalone **AZAN Tools Linux binary** and **Android APK bundle** to host tools locally via terminal bypass.
                     </p>
 
-                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer">
+                    <!-- Android APK Card -->
+                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
                         <div class="flex items-center space-x-3">
                             <div class="p-2 bg-emerald-950/50 border border-emerald-900/60 rounded-xl text-emerald-400 text-lg">
                                 <i class="fa-brands fa-android"></i>
@@ -261,10 +264,24 @@
                         </div>
                         <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
                     </div>
+
+                    <!-- Termux Script Card (Restored) -->
+                    <div class="p-3.5 bg-[#080d16] border border-cyan-950/60 hover:border-cyan-500/40 rounded-xl flex items-center justify-between transition cursor-pointer active:scale-98">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-blue-950/50 border border-blue-900/60 rounded-xl text-blue-400 text-lg">
+                                <i class="fa-solid fa-terminal"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-200">Termux Install Script</h4>
+                                <p class="text-[9px] text-gray-500 font-mono">setup.sh • Automated Environment</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-cloud-arrow-down text-cyan-400 text-sm animate-pulse"></i>
+                    </div>
                 </div>
             </section>
 
-            <!-- VIP PRO TERMINAL TAB WITH SECRET KEY ACTIVATION -->
+            <!-- VIP PRO TERMINAL TAB WITH SECRET KEY & FEATURES -->
             <section id="tab-pro" class="tab-content space-y-5">
                 <div class="text-center space-y-1 py-2">
                     <h2 class="text-lg font-black text-yellow-400 tracking-widest text-glow-yellow uppercase"><i class="fa-solid fa-crown mr-1"></i> VIP Upgrade Portal</h2>
@@ -292,6 +309,11 @@
                             <p class="text-[9px] text-gray-500 font-mono">Single Payment</p>
                         </div>
                     </div>
+                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Unlock all 25+ PRO Scripts</li>
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Cloud Terminal ID Authorization</li>
+                        <li><i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-[9px]"></i> Basic 30-Day Storage Backup</li>
+                    </ul>
                     <button class="btn-buy-wa w-full bg-[#111928] hover:bg-yellow-500 hover:text-slate-950 border border-yellow-500/20 text-yellow-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md" data-plan="1 Month Basic" data-price="Rs. 300">
                         BUY VIA WHATSAPP
                     </button>
@@ -309,6 +331,11 @@
                             <p class="text-[9px] text-gray-400 font-mono">Saves Rs. 200</p>
                         </div>
                     </div>
+                    <ul class="mt-4 space-y-2 border-t border-yellow-500/10 pt-3 text-[11px] text-gray-300 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> All 25+ Premium PRO Tools</li>
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Full Access to Video Tutorials</li>
+                        <li><i class="fa-solid fa-circle-check text-yellow-400 mr-2 text-[9px]"></i> Unlimited Links Maker Configurations</li>
+                    </ul>
                     <button class="btn-buy-wa w-full bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-950 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 active:scale-95 transition cursor-pointer uppercase shadow-lg" data-plan="3 Months Cyber Stack" data-price="Rs. 1000">
                         BUY VIA WHATSAPP
                     </button>
@@ -326,6 +353,11 @@
                             <p class="text-[9px] text-gray-500 font-mono">Ultimate Pack</p>
                         </div>
                     </div>
+                    <ul class="mt-4 space-y-2 border-t border-gray-900/60 pt-3 text-[11px] text-gray-400 font-mono">
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> Complete Suite + Future Beta Tools</li>
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> App Downloader Client Unlimited Access</li>
+                        <li><i class="fa-solid fa-circle-check text-red-500 mr-2 text-[9px]"></i> 24/7 Priority Cloud Dev Node Support</li>
+                    </ul>
                     <button class="btn-buy-wa w-full bg-[#111928] hover:bg-red-600 hover:text-white border border-red-500/20 text-red-400 font-black text-[11px] tracking-widest py-3.5 rounded-xl mt-4 transition cursor-pointer uppercase shadow-md" data-plan="1 Year Ultimate Dev" data-price="Rs. 3000">
                         BUY VIA WHATSAPP
                     </button>
@@ -343,6 +375,11 @@
         </nav>
     </div>
 
+    <!-- MAIN JAVASCRIPT -->
     <script type="module" src="app.js"></script>
+
+    <!-- MOBILE DEBUGGING TOOLS (ERUDA CONSOLE RESTORED) -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </body>
-                </html>
+                                    </html>
