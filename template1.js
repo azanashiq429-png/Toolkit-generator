@@ -1,5 +1,5 @@
 // template1.js
-export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, modalViewsHTML, coreExecutableJS, templateStyle = "grid") {
+export function generateTemplate1(title, themeClass, dashboardCardsHTML, modalViewsHTML, coreExecutableJS, templateStyle = "grid") {
     const isList = templateStyle === "list";
     const layoutClass = isList ? "tools-list-stack" : "tools-3x3-grid";
 
