@@ -47,7 +47,7 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             --border-glow: rgba(239, 68, 68, 0.3);
         }
 
-        /* Custom Scrollbar for heavy look */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
@@ -57,7 +57,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
 
         body {
             background-color: var(--bg-deep);
-            /* Futuristic Grid Background */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -75,7 +74,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             overflow-x: hidden;
         }
 
-        /* Main Dashboard Area */
         .dashboard-canvas {
             width: 100%;
             max-width: 1280px;
@@ -120,204 +118,114 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             text-shadow: 0 0 8px rgba(255,255,255,0.5);
         }
 
-        /* Grid Layouts */
-        .tools-3x3-grid {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 24px;
-        }
+        .tools-3x3-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 24px; }
         @media (min-width: 768px) { .tools-3x3-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .tools-3x3-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
         .tools-list-stack { display: flex; flex-direction: column; gap: 18px; }
 
-        /* Premium Cards */
         .premium-card {
             background: linear-gradient(145deg, var(--bg-card) 0%, rgba(5, 8, 15, 0.8) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
+            border-radius: 24px; padding: 30px 20px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            position: relative; cursor: pointer; overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Card Hover Effects */
         .premium-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-25deg);
-            transition: all 0.5s;
+            transform: skewX(-25deg); transition: all 0.5s;
         }
-
         .premium-card:hover::before { left: 150%; }
-
         .premium-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--primary);
+            transform: translateY(-8px) scale(1.02); border-color: var(--primary);
             box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 30px var(--primary-glow);
             background: linear-gradient(145deg, rgba(17, 24, 39, 0.9) 0%, rgba(5, 8, 15, 0.9) 100%);
         }
 
-        /* List View adjustments */
-        .tools-list-stack .premium-card {
-            flex-direction: row; justify-content: space-between;
-            text-align: left; padding: 20px 28px;
-        }
+        .tools-list-stack .premium-card { flex-direction: row; justify-content: space-between; text-align: left; padding: 20px 28px; }
 
         .icon-sphere {
-            width: 64px; height: 64px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 64px; height: 64px; border-radius: 20px;
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; align-items: center; justify-content: center;
-            color: var(--primary);
-            font-size: 28px; margin-bottom: 18px;
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.02);
-            transition: all 0.4s;
+            color: var(--primary); font-size: 28px; margin-bottom: 18px;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.02); transition: all 0.4s;
         }
-
         .premium-card:hover .icon-sphere {
-            background: var(--primary);
-            color: #000;
-            border-color: #fff;
+            background: var(--primary); color: #000; border-color: #fff;
             box-shadow: 0 0 25px var(--primary-glow), inset 0 0 10px rgba(255,255,255,0.8);
             transform: scale(1.1) rotate(5deg);
         }
 
         .tools-list-stack .icon-sphere { margin-bottom: 0; margin-right: 20px; }
-
-        .card-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 20px; font-weight: 700;
-            color: #ffffff; letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-
+        .card-title { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: 1px; margin-bottom: 16px; }
         .tools-list-stack .card-title { margin-bottom: 0; flex-grow: 1; font-size: 22px; }
 
         .glowing-launch-btn {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 10px 24px;
-            border-radius: 14px;
-            font-weight: 800; font-size: 12px;
-            cursor: pointer; text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            position: relative; overflow: hidden;
+            background: transparent; color: var(--primary); border: 1px solid var(--primary);
+            padding: 10px 24px; border-radius: 14px; font-weight: 800; font-size: 12px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
         }
+        .glowing-launch-btn:hover { background: var(--primary); color: #02040a; box-shadow: 0 0 20px var(--primary-glow); }
 
-        .glowing-launch-btn:hover {
-            background: var(--primary);
-            color: #02040a;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        /* -------------------------------------------
-           HEAVY FULL-WINDOW MODAL (The Workspace) 
-           ------------------------------------------- */
+        /* HEAVY MODAL WORKSPACE (Fixed Display Logic) */
         .modal-portal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 4, 10, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            justify-content: center; align-items: center;
-            z-index: 9999; 
-            padding: 2vh 2vw; /* Slight margin from screen edges */
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(2, 4, 10, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            justify-content: center; align-items: center; z-index: 9999; padding: 2vh 2vw;
+            opacity: 0; transition: opacity 0.3s ease;
         }
-
-        .modal-portal.active {
-            display: flex;
-            opacity: 1;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .modal-portal.active { opacity: 1; }
 
         .modal-card {
             background: linear-gradient(180deg, #090e1a 0%, #03060c 100%);
             border: 1px solid var(--primary);
             box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow), inset 0 0 20px rgba(34, 211, 238, 0.05);
-            
-            /* FULL WINDOW SIZING */
-            width: 100%;
-            height: 100%;
-            max-width: 1800px; /* Optional cap on ultra-wide screens */
-            border-radius: 24px;
-            
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            
-            transform: scale(0.95) translateY(20px);
-            opacity: 0;
-            animation: workspacePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+            width: 100%; height: 100%; max-width: 1800px; border-radius: 24px;
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
+            transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
+        .modal-portal.active .modal-card { transform: scale(1); }
 
-        @keyframes workspacePop {
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* Inner Content area of the Full-Screen Tool */
-        .modal-content-wrapper {
-            flex-grow: 1;
-            padding: 40px;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
-        }
+        .modal-content-wrapper { flex-grow: 1; padding: 40px; overflow-y: auto; position: relative; z-index: 1; }
 
         .dismiss-portal-btn {
-            position: absolute; top: 20px; right: 24px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444; 
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 20px; cursor: pointer;
-            transition: all 0.3s;
-            z-index: 100;
+            position: absolute; top: 20px; right: 24px; background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; width: 44px; height: 44px;
+            border-radius: 12px; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; transition: all 0.3s; z-index: 100;
         }
-        
-        .dismiss-portal-btn:hover { 
-            background: #ef4444;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
-            transform: rotate(90deg);
-        }
+        .dismiss-portal-btn:hover { background: #ef4444; color: #fff; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); transform: rotate(90deg); }
 
-        /* Auto-Styling for Inputs inside the Heavy Tool Window */
         .modal-card input, .modal-card textarea, .modal-card select {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 12px;
-            transition: all 0.3s;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff;
+            padding: 12px 18px; border-radius: 12px; transition: all 0.3s;
         }
-        .modal-card input:focus, .modal-card textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-            outline: none;
+        .modal-card input:focus, .modal-card textarea:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); outline: none; }
+
+        /* LOADING ANIMATION CSS */
+        .cyber-loader {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #090e1a; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 50; transition: opacity 0.5s ease; border-radius: 24px;
         }
+        .spinner-ring {
+            width: 70px; height: 70px; border: 4px solid rgba(34, 211, 238, 0.1); border-top: 4px solid var(--primary);
+            border-radius: 50%; animation: spinLoader 1s linear infinite, glowPulse 2s infinite alternate;
+        }
+        .loader-text {
+            margin-top: 20px; color: var(--primary); font-family: 'Rajdhani', sans-serif;
+            font-size: 20px; font-weight: 700; letter-spacing: 4px; animation: textBlink 1.5s infinite;
+        }
+        .progress-track { width: 250px; height: 4px; background: rgba(255,255,255,0.05); margin-top: 15px; overflow: hidden; border-radius: 2px; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; box-shadow: 0 0 10px var(--primary-glow); animation: loadFill 1.3s ease-out forwards; }
+        
+        @keyframes spinLoader { 100% { transform: rotate(360deg); } }
+        @keyframes glowPulse { 100% { box-shadow: 0 0 25px var(--primary-glow); } }
+        @keyframes textBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes loadFill { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
     </style>
 </head>
 <body class="${themeClass}">
@@ -335,16 +243,63 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         </div>
     </div>
 
-    <!-- Modals are injected here. Make sure your modalViewsHTML wraps content in <div class="modal-content-wrapper"> if you want custom scrolling inside -->
     ${modalViewsHTML}
 
     <script>
         function openToolModal(toolId) {
             const modal = document.getElementById('modal_' + toolId);
             if(modal) {
-                modal.classList.add('active');
-                // Prevent background scrolling when workspace is open
+                // BUG FIX: Ensure modal is visible first
+                modal.style.display = 'flex';
+                
+                // Add active class slightly after so transition works
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
                 document.body.style.overflow = 'hidden'; 
+                
+                // Add Loader Logic (Fixed string interpolation bug)
+                let modalCard = modal.querySelector('.modal-card');
+                let loader = modal.querySelector('.cyber-loader');
+                
+                if(!loader && modalCard) {
+                    loader = document.createElement('div');
+                    loader.className = 'cyber-loader';
+                    // String concatenation used to prevent template literal errors
+                    loader.innerHTML = '<div class="spinner-ring"></div>' +
+                                       '<div class="loader-text">SYSTEM BOOTING...</div>' +
+                                       '<div class="progress-track"><div class="progress-fill"></div></div>';
+                    modalCard.appendChild(loader);
+                }
+                
+                // Execute Loading Sequence
+                if(loader && modalCard) {
+                    loader.style.display = 'flex';
+                    loader.style.opacity = '1';
+                    
+                    // Hide real content temporarily
+                    let contentElems = modalCard.children;
+                    for(let i=0; i<contentElems.length; i++) {
+                        if(contentElems[i] !== loader) {
+                            contentElems[i].style.opacity = '0';
+                            contentElems[i].style.transition = 'opacity 0.5s ease';
+                        }
+                    }
+                    
+                    // Remove loader and show content after 1.5s
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        for(let i=0; i<contentElems.length; i++) {
+                            if(contentElems[i] !== loader) {
+                                contentElems[i].style.opacity = '1';
+                            }
+                        }
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                        }, 500);
+                    }, 1500);
+                }
             }
         }
 
@@ -353,14 +308,22 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             if(modal) {
                 modal.classList.remove('active');
                 document.body.style.overflow = 'auto';
+                
+                // Wait for animation to finish before hiding display
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
             }
         }
 
-        // Close on clicking outside the workspace window
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-portal')) {
                 event.target.classList.remove('active');
                 document.body.style.overflow = 'auto';
+                
+                setTimeout(() => {
+                    event.target.style.display = 'none';
+                }, 300);
             }
         }
 
