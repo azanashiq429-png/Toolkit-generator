@@ -1,4 +1,99 @@
-// --- 1. TOOL DATA IMPORTS ---
+// ==================== DOM ELEMENTS ====================
+const authOverlay = document.getElementById('authOverlay');
+const mainPlatform = document.getElementById('mainPlatform');
+const authForm = document.getElementById('authForm');
+const authTitle = document.getElementById('authTitle');
+const authSubtitle = document.getElementById('authSubtitle');
+const btnAuthSubmit = document.getElementById('btnAuthSubmit');
+const btnToggleAuthMode = document.getElementById('btnToggleAuthMode');
+const usernameFieldContainer = document.getElementById('usernameFieldContainer');
+const userDisplayEmail = document.getElementById('userDisplayEmail');
+
+const menuBtn = document.getElementById('menuBtn');
+const topMenu = document.getElementById('topMenu');
+const btnLogout = document.getElementById('btnLogout');
+
+let isSignUpMode = false;
+
+// ==================== TOGGLE LOGIN / SIGNUP MODE ====================
+btnToggleAuthMode.addEventListener('click', () => {
+    isSignUpMode = !isSignUpMode;
+
+    if (isSignUpMode) {
+        authTitle.textContent = "CREATE TERMINAL ID";
+        authSubtitle.textContent = "Register credentials to access AZAN gateway";
+        btnAuthSubmit.textContent = "CREATE ACCOUNT & ACCESS";
+        btnToggleAuthMode.textContent = "Already have an account? Terminal Login";
+        usernameFieldContainer.classList.remove('hidden');
+    } else {
+        authTitle.textContent = "TERMINAL ACCESS LOGIN";
+        authSubtitle.textContent = "Provide credentials to boot AZAN tools gateway";
+        btnAuthSubmit.textContent = "AUTHENTICATE SECURITY GATEWAY";
+        btnToggleAuthMode.textContent = "Don't have an account? Create Terminal ID";
+        usernameFieldContainer.classList.add('hidden');
+    }
+});
+
+// ==================== AUTH FORM SUBMIT LOGIC ====================
+authForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const emailInput = document.getElementById('authEmail').value;
+
+    // Set User Email in Top Header
+    if (userDisplayEmail) {
+        userDisplayEmail.textContent = emailInput || "User Terminal";
+    }
+
+    // Hide Auth Overlay & Unlock Main Platform
+    authOverlay.classList.add('hidden');
+    mainPlatform.classList.remove('opacity-30', 'pointer-events-none');
+});
+
+// ==================== TOP MENU TOGGLE ====================
+menuBtn.addEventListener('click', () => {
+    topMenu.classList.toggle('hidden');
+});
+
+// ==================== LOGOUT LOGIC ====================
+btnLogout.addEventListener('click', () => {
+    topMenu.classList.add('hidden');
+    
+    // Lock Platform & Show Auth Overlay
+    authOverlay.classList.remove('hidden');
+    mainPlatform.classList.add('opacity-30', 'pointer-events-none');
+    
+    // Reset Form
+    authForm.reset();
+});
+
+// ==================== TAB NAVIGATION LOGIC ====================
+const navButtons = document.querySelectorAll('.nav-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const targetTab = button.id.replace('nav-', 'tab-');
+
+        // Hide all tabs
+        tabContents.forEach(tab => tab.classList.remove('active'));
+
+        // Reset nav button colors
+        navButtons.forEach(btn => {
+            btn.classList.remove('text-cyan-400');
+            btn.classList.add('text-gray-500');
+        });
+
+        // Show target tab & highlight button
+        const activeTab = document.getElementById(targetTab);
+        if (activeTab) {
+            activeTab.classList.add('active');
+            button.classList.remove('text-gray-500');
+            button.classList.add('text-cyan-400');
+        }
+    });
+});
+        // --- 1. TOOL DATA IMPORTS ---
 import { freeTools } from './free-tools.js';
 import { premiumTools } from './premium-tools.js';
 import { hackingTools } from './hacking-tools.js';
