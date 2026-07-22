@@ -13,310 +13,286 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Fonts & FontAwesome Icons -->
+    <!-- Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-deep: #02040a;
-            --bg-glass: rgba(10, 15, 30, 0.6);
-            --bg-card: rgba(13, 20, 38, 0.4);
-            --border-glow: rgba(34, 211, 238, 0.3);
-            --primary: #22d3ee;
-            --primary-glow: rgba(34, 211, 238, 0.5);
-            --secondary: #0891b2;
-            --accent: #eab308;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-deep: #010205;
+            --bg-glass: rgba(5, 8, 15, 0.7);
+            --bg-card: rgba(8, 12, 22, 0.6);
+            --primary: #00ffcc;
+            --primary-glow: rgba(0, 255, 204, 0.6);
+            --secondary: #0088ff;
+            --accent: #ff0055;
+            --text-main: #e2e8f0;
         }
 
         .theme-yellow {
-            --primary: #facc15;
-            --primary-glow: rgba(250, 204, 21, 0.5);
-            --secondary: #ca8a04;
-            --border-glow: rgba(250, 204, 21, 0.3);
+            --primary: #ffd700; --primary-glow: rgba(255, 215, 0, 0.6);
+            --secondary: #ff8c00; --accent: #ff003c;
         }
 
         .theme-ruby {
-            --primary: #ef4444;
-            --primary-glow: rgba(239, 68, 68, 0.5);
-            --secondary: #b91c1c;
-            --border-glow: rgba(239, 68, 68, 0.3);
+            --primary: #ff003c; --primary-glow: rgba(255, 0, 60, 0.6);
+            --secondary: #990000; --accent: #00ffcc;
         }
 
-        /* Custom Scrollbar for heavy look */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-deep); }
-        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+        /* Heavy Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        /* Moving Cyber Grid Background */
         body {
             background-color: var(--bg-deep);
-            /* Futuristic Grid Background */
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 100%, rgba(8, 145, 178, 0.1) 0%, transparent 50%);
-            background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
-            background-position: center center;
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.08) 0%, transparent 60%);
+            background-size: 50px 50px, 50px 50px, 100vw 100vh;
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 40px 20px;
+            padding: 60px 20px;
             overflow-x: hidden;
+            animation: moveGrid 15s linear infinite;
         }
 
-        /* Main Dashboard Area */
+        @keyframes moveGrid {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 50px 50px, 50px 50px, 0 0; }
+        }
+
+        /* CRT TV Scanline Overlay (The Ultimate Heavy Effect) */
+        body::after {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Main Dashboard Canvas with HUD Corners */
         .dashboard-canvas {
             width: 100%;
-            max-width: 1280px;
+            max-width: 1300px;
             background: var(--bg-glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255,255,255,0.02);
-            border-radius: 32px;
-            padding: 50px 40px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(0, 255, 204, 0.05);
+            padding: 60px 50px;
             position: relative;
             z-index: 10;
         }
 
-        header { text-align: center; margin-bottom: 50px; position: relative; }
+        /* Cyberpunk HUD Corners */
+        .dashboard-canvas::before, .dashboard-canvas::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            border: 2px solid var(--primary); pointer-events: none;
+            animation: pulseGlow 2s infinite alternate;
+        }
+        .dashboard-canvas::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .dashboard-canvas::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
 
-        h1 {
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px var(--primary-glow); border-color: var(--secondary); }
+            100% { box-shadow: 0 0 20px var(--primary-glow), inset 0 0 10px var(--primary-glow); border-color: var(--primary); }
+        }
+
+        header { text-align: center; margin-bottom: 60px; position: relative; }
+
+        /* Glitch Title Effect */
+        .glitch-title {
             font-family: 'Rajdhani', sans-serif;
-            color: #ffffff;
-            font-size: 46px;
+            color: #fff;
+            font-size: 55px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px var(--primary-glow), 0 0 10px var(--primary);
-            margin-bottom: 15px;
+            letter-spacing: 5px;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+        
+        .glitch-title::before, .glitch-title::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .glitch-title::before { left: 3px; text-shadow: -2px 0 var(--accent); animation: glitch-anim 2s infinite linear alternate-reverse; }
+        .glitch-title::after { left: -3px; text-shadow: -2px 0 var(--secondary); animation: glitch-anim 3s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim {
+            0% { clip-path: inset(10% 0 80% 0); }
+            20% { clip-path: inset(80% 0 1% 0); }
+            40% { clip-path: inset(30% 0 50% 0); }
+            60% { clip-path: inset(100% 0 1% 0); }
+            80% { clip-path: inset(5% 0 70% 0); }
+            100% { clip-path: inset(40% 0 30% 0); }
         }
 
         .system-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            border: 1px solid var(--accent);
-            padding: 6px 20px;
-            border-radius: 50px;
-            background: rgba(234, 179, 8, 0.15);
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.3), inset 0 0 10px rgba(234, 179, 8, 0.2);
-            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+            display: inline-flex; align-items: center; gap: 10px;
+            color: #fff; font-size: 13px; font-weight: 800; letter-spacing: 4px;
+            font-family: 'Share Tech Mono', monospace; text-transform: uppercase;
+            border: 1px solid var(--accent); padding: 8px 25px; border-radius: 0;
+            background: rgba(255, 0, 85, 0.15); margin-top: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            border-left: 4px solid var(--accent);
+            border-right: 4px solid var(--accent);
         }
 
-        /* Grid Layouts */
-        .tools-3x3-grid {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 24px;
-        }
+        /* Layouts */
+        .tools-3x3-grid { display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 30px; }
         @media (min-width: 768px) { .tools-3x3-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .tools-3x3-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        .tools-list-stack { display: flex; flex-direction: column; gap: 20px; }
 
-        .tools-list-stack { display: flex; flex-direction: column; gap: 18px; }
-
-        /* Premium Cards */
+        /* Heavy Premium Cards */
         .premium-card {
-            background: linear-gradient(145deg, var(--bg-card) 0%, rgba(5, 8, 15, 0.8) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(135deg, rgba(15, 20, 30, 0.8) 0%, rgba(2, 4, 10, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 35px 25px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            position: relative; cursor: pointer;
+            transition: all 0.3s ease-out;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
         }
 
-        /* Card Hover Effects */
-        .premium-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: skewX(-25deg);
-            transition: all 0.5s;
+        .premium-card::after {
+            content: ''; position: absolute; bottom: 0; right: 0; width: 15px; height: 15px;
+            background: var(--primary);
         }
-
-        .premium-card:hover::before { left: 150%; }
 
         .premium-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-10px) scale(1.03);
             border-color: var(--primary);
-            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 30px var(--primary-glow);
-            background: linear-gradient(145deg, rgba(17, 24, 39, 0.9) 0%, rgba(5, 8, 15, 0.9) 100%);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 40px var(--primary-glow);
+            background: linear-gradient(135deg, rgba(20, 30, 50, 0.9) 0%, rgba(2, 4, 10, 0.95) 100%);
         }
 
-        /* List View adjustments */
-        .tools-list-stack .premium-card {
-            flex-direction: row; justify-content: space-between;
-            text-align: left; padding: 20px 28px;
-        }
+        .tools-list-stack .premium-card { flex-direction: row; justify-content: space-between; text-align: left; padding: 25px 35px; }
 
         .icon-sphere {
-            width: 64px; height: 64px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 70px; height: 70px;
+            background: radial-gradient(circle, rgba(0,255,204,0.1) 0%, rgba(0,0,0,0.5) 100%);
+            border: 1px solid rgba(0,255,204,0.3);
             display: flex; align-items: center; justify-content: center;
-            color: var(--primary);
-            font-size: 28px; margin-bottom: 18px;
-            box-shadow: inset 0 0 15px rgba(255,255,255,0.02);
-            transition: all 0.4s;
+            color: var(--primary); font-size: 30px; margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0,255,204,0.2);
+            transition: all 0.3s;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         }
 
         .premium-card:hover .icon-sphere {
-            background: var(--primary);
-            color: #000;
-            border-color: #fff;
-            box-shadow: 0 0 25px var(--primary-glow), inset 0 0 10px rgba(255,255,255,0.8);
-            transform: scale(1.1) rotate(5deg);
+            background: var(--primary); color: #000;
+            box-shadow: 0 0 30px var(--primary-glow);
+            transform: rotate(360deg);
         }
 
-        .tools-list-stack .icon-sphere { margin-bottom: 0; margin-right: 20px; }
+        .tools-list-stack .icon-sphere { margin-bottom: 0; margin-right: 25px; }
 
         .card-title {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 20px; font-weight: 700;
-            color: #ffffff; letter-spacing: 1px;
-            margin-bottom: 16px;
+            font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 800;
+            color: #fff; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase;
         }
 
-        .tools-list-stack .card-title { margin-bottom: 0; flex-grow: 1; font-size: 22px; }
+        .tools-list-stack .card-title { margin-bottom: 0; flex-grow: 1; font-size: 24px; }
 
         .glowing-launch-btn {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 10px 24px;
-            border-radius: 14px;
-            font-weight: 800; font-size: 12px;
-            cursor: pointer; text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            position: relative; overflow: hidden;
+            background: transparent; color: var(--primary);
+            border: 2px solid var(--primary); padding: 12px 30px;
+            font-family: 'Share Tech Mono', monospace; font-weight: 800; font-size: 13px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            transition: all 0.2s; position: relative; overflow: hidden;
         }
 
         .glowing-launch-btn:hover {
-            background: var(--primary);
-            color: #02040a;
-            box-shadow: 0 0 20px var(--primary-glow);
+            background: var(--primary); color: #000;
+            box-shadow: 0 0 25px var(--primary-glow);
+            text-shadow: none;
         }
 
-        /* -------------------------------------------
-           HEAVY FULL-WINDOW MODAL (The Workspace) 
-           ------------------------------------------- */
+        /* HEAVY FULL-WINDOW MODAL WORKSPACE */
         .modal-portal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 4, 10, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(1, 2, 5, 0.95);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             justify-content: center; align-items: center;
-            z-index: 9999; 
-            padding: 2vh 2vw; /* Slight margin from screen edges */
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            z-index: 9999; padding: 2vh 2vw; opacity: 0;
         }
 
-        .modal-portal.active {
-            display: flex;
-            opacity: 1;
-            animation: fadeIn 0.3s forwards;
-        }
+        .modal-portal.active { display: flex; animation: systemBoot 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes systemBoot {
+            0% { opacity: 0; filter: brightness(3) contrast(3); }
+            50% { opacity: 1; filter: brightness(1.5) contrast(1.5); transform: scale(1.02); }
+            100% { opacity: 1; filter: brightness(1) contrast(1); transform: scale(1); }
         }
 
         .modal-card {
-            background: linear-gradient(180deg, #090e1a 0%, #03060c 100%);
+            background: linear-gradient(180deg, #050a12 0%, #000000 100%);
             border: 1px solid var(--primary);
-            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 30px var(--primary-glow), inset 0 0 20px rgba(34, 211, 238, 0.05);
-            
-            /* FULL WINDOW SIZING */
-            width: 100%;
-            height: 100%;
-            max-width: 1800px; /* Optional cap on ultra-wide screens */
-            border-radius: 24px;
-            
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            
-            transform: scale(0.95) translateY(20px);
-            opacity: 0;
-            animation: workspacePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+            box-shadow: 0 0 80px rgba(0,255,204,0.1), inset 0 0 50px rgba(0,255,204,0.05);
+            width: 100%; height: 100%; max-width: 1800px;
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
 
-        @keyframes workspacePop {
-            to { transform: scale(1) translateY(0); opacity: 1; }
+        /* Terminal Data Stream Effect at Top */
+        .modal-card::before {
+            content: 'SECURE_WORKSPACE_INITIALIZED... [OK]';
+            position: absolute; top: 0; left: 0; width: 100%; height: 25px;
+            background: var(--primary); color: #000;
+            font-family: 'Share Tech Mono', monospace; font-size: 12px; font-weight: 800;
+            display: flex; align-items: center; padding-left: 15px;
+            letter-spacing: 2px;
         }
 
-        /* Inner Content area of the Full-Screen Tool */
-        .modal-content-wrapper {
-            flex-grow: 1;
-            padding: 40px;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
-        }
+        .modal-content-wrapper { flex-grow: 1; padding: 60px 40px 40px; overflow-y: auto; position: relative; z-index: 1; }
 
         .dismiss-portal-btn {
-            position: absolute; top: 20px; right: 24px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444; 
-            width: 44px; height: 44px;
-            border-radius: 12px;
+            position: absolute; top: 40px; right: 30px;
+            background: transparent; border: 2px solid var(--accent);
+            color: var(--accent); width: 50px; height: 50px;
             display: flex; justify-content: center; align-items: center;
-            font-size: 20px; cursor: pointer;
-            transition: all 0.3s;
-            z-index: 100;
+            font-size: 24px; cursor: pointer; transition: all 0.3s; z-index: 100;
+            clip-path: polygon(20% 0%, 100% 0, 100% 80%, 80% 100%, 0 100%, 0% 20%);
         }
         
         .dismiss-portal-btn:hover { 
-            background: #ef4444;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
-            transform: rotate(90deg);
+            background: var(--accent); color: #000;
+            box-shadow: 0 0 30px rgba(255,0,85,0.6);
+            transform: scale(1.1);
         }
 
-        /* Auto-Styling for Inputs inside the Heavy Tool Window */
+        /* Tool Inputs Styling */
         .modal-card input, .modal-card textarea, .modal-card select {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: var(--primary);
+            padding: 15px 20px;
+            font-family: 'Share Tech Mono', monospace; font-size: 16px;
             transition: all 0.3s;
+            border-left: 4px solid var(--primary);
         }
         .modal-card input:focus, .modal-card textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-            outline: none;
+            box-shadow: 0 0 20px var(--primary-glow);
+            outline: none; background: rgba(0, 255, 204, 0.05);
         }
     </style>
 </head>
@@ -324,9 +300,11 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
 
     <div class="dashboard-canvas">
         <header>
-            <h1>${title}</h1>
+            <!-- H1 Text matches data-text for Glitch Effect -->
+            <h1 class="glitch-title" data-text="${title}">${title}</h1>
+            <br>
             <div class="system-badge">
-                <i class="fa-solid fa-bolt text-amber-400"></i> POWERED BY AZAN TECH LAB
+                <i class="fa-solid fa-microchip text-rose-500"></i> SYSTEM ACTIVE // AZAN TECH LAB
             </div>
         </header>
         
@@ -335,7 +313,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
         </div>
     </div>
 
-    <!-- Modals are injected here. Make sure your modalViewsHTML wraps content in <div class="modal-content-wrapper"> if you want custom scrolling inside -->
     ${modalViewsHTML}
 
     <script>
@@ -343,7 +320,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             const modal = document.getElementById('modal_' + toolId);
             if(modal) {
                 modal.classList.add('active');
-                // Prevent background scrolling when workspace is open
                 document.body.style.overflow = 'hidden'; 
             }
         }
@@ -356,7 +332,6 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
             }
         }
 
-        // Close on clicking outside the workspace window
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-portal')) {
                 event.target.classList.remove('active');
@@ -368,4 +343,4 @@ export function generateDashboardHTML(title, themeClass, dashboardCardsHTML, mod
     </script>
 </body>
 </html>`;
-}
+                }
