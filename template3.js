@@ -5,6 +5,8 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} - Neo-Minimal</title>
+    <!-- 1. Tailwind CSS CDN (Dynamic Tool Classes Fix) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -21,6 +23,7 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
             --panel-bg: #05080f;
             --panel-border: rgba(0, 242, 254, 0.25);
             --card-base-bg: linear-gradient(180deg, #0e1626 0%, #060a12 100%);
+            --neon-color: #00f2fe;
         }
 
         body.light-mode {
@@ -30,6 +33,7 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
             --panel-bg: #ffffff;
             --panel-border: rgba(0, 0, 0, 0.1);
             --card-base-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            --neon-color: #0284c7;
         }
 
         body {
@@ -60,7 +64,7 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
             letter-spacing: 2px;
             text-transform: uppercase;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 18px #00f2fe;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 18px var(--neon-color);
             margin: 0;
         }
 
@@ -130,12 +134,12 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
 
         .premium-card:hover {
             transform: translateY(-2px);
-            border-color: #00f2fe;
+            border-color: var(--neon-color);
         }
 
         .icon-sphere {
             font-size: 1.4rem;
-            color: #00f2fe;
+            color: var(--neon-color);
             margin-right: 12px;
         }
 
@@ -146,7 +150,7 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
         }
 
         .glowing-launch-btn {
-            background: #00f2fe;
+            background: var(--neon-color);
             color: #04080f;
             border: none;
             padding: 8px 14px;
@@ -174,12 +178,14 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
 
         .modal-card {
             background: #090e18;
-            border: 1px solid #00f2fe;
+            border: 1px solid var(--neon-color);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
             width: 100%;
             max-width: 500px;
             padding: 25px;
             border-radius: 20px;
             position: relative;
+            color: #ffffff;
         }
 
         .dismiss-portal-btn {
@@ -187,8 +193,80 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
             top: 15px;
             right: 20px;
             color: #9ca3af;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        .dismiss-portal-btn:hover {
+            color: #ff4444;
+        }
+
+        /* --- 2. MODAL INNER ELEMENTS STYLING FIX --- */
+        .modal-card input:not(.search-input), 
+        .modal-card textarea {
+            width: 100% !important;
+            background: #030712 !important;
+            border: 1px solid rgba(0, 242, 254, 0.3) !important;
+            color: #22d3ee !important;
+            border-radius: 10px !important;
+            padding: 10px 14px !important;
+            font-family: monospace !important;
+            font-size: 13px !important;
+            outline: none !important;
+            margin-top: 6px !important;
+            margin-bottom: 12px !important;
+            box-sizing: border-box !important;
+        }
+
+        .modal-card input:focus, 
+        .modal-card textarea:focus {
+            border-color: var(--neon-color) !important;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4) !important;
+        }
+
+        .modal-card button:not(.dismiss-portal-btn) {
+            width: 100% !important;
+            background: var(--neon-color) !important;
+            color: #04080f !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 12px !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            font-size: 12px !important;
+            margin-top: 8px !important;
+        }
+
+        .modal-card button:not(.dismiss-portal-btn):hover {
+            box-shadow: 0 0 15px var(--neon-color) !important;
+            transform: scale(1.01);
+        }
+
+        .modal-card label {
+            font-size: 11px !important;
+            font-family: monospace !important;
+            color: var(--neon-color) !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            display: block !important;
+        }
+
+        .modal-card h2 {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+            color: var(--neon-color) !important;
+            margin-bottom: 8px !important;
+        }
+
+        .modal-card p {
+            font-size: 0.8rem !important;
+            color: #94a3b8 !important;
+            margin-bottom: 12px !important;
         }
     </style>
 </head>
@@ -227,11 +305,15 @@ export function generateTemplate3(title, themeClass, dashboardCardsHTML, modalVi
         });
 
         function openToolModal(toolId) {
-            document.getElementById('modal_' + toolId).style.display = 'flex';
+            const m = document.getElementById('modal_' + toolId);
+            if (m) m.style.display = 'flex';
         }
+
         function closeToolModal(toolId) {
-            document.getElementById('modal_' + toolId).style.display = 'none';
+            const m = document.getElementById('modal_' + toolId);
+            if (m) m.style.display = 'none';
         }
+
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-portal')) {
                 event.target.style.display = 'none';
