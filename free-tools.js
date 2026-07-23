@@ -26,7 +26,6 @@ export const freeTools = [
             const sentences = trimmed ? trimmed.split(/[.!?]+/).filter(Boolean).length : 0;
             const paragraphs = trimmed ? trimmed.split(/\\n+/).filter(Boolean).length : 0;
             
-            // Average reading speed: 200 words per minute
             const readSecs = Math.ceil((words / 200) * 60);
             const readTimeStr = readSecs >= 60 ? Math.floor(readSecs/60) + 'm ' + (readSecs%60) + 's' : readSecs + 's';
 
@@ -60,15 +59,15 @@ export const freeTools = [
             </div>
         </div>`,
         js: `const runRegexHeavy = () => {
-            const patternVal = document.getElementById('regexPattern').value;
-            const flagsVal = document.getElementById('regexFlags').value;
-            const textVal = document.getElementById('regexText').value;
+            const patternVal = document.getElementById('regexPattern')?.value;
+            const flagsVal = document.getElementById('regexFlags')?.value;
+            const textVal = document.getElementById('regexText')?.value;
             const countBox = document.getElementById('regexMatchCount');
             const resultBox = document.getElementById('regexResultList');
 
             if (!patternVal || !textVal) {
-                countBox.innerText = 'Matches Found: 0';
-                resultBox.innerHTML = '<span class="text-gray-500">Waiting for pattern and text input...</span>';
+                if(countBox) countBox.innerText = 'Matches Found: 0';
+                if(resultBox) resultBox.innerHTML = '<span class="text-gray-500">Waiting for pattern and text input...</span>';
                 return;
             }
 
@@ -77,25 +76,155 @@ export const freeTools = [
                 const matches = textVal.match(regex);
 
                 if (matches) {
-                    countBox.innerText = 'Matches Found: ' + matches.length;
+                    if(countBox) countBox.innerText = 'Matches Found: ' + matches.length;
                     let listHTML = '<ol class="list-decimal pl-4 space-y-1">';
-                    matches.forEach((m, idx) => {
+                    matches.forEach((m) => {
                         listHTML += '<li><mark class="bg-cyan-500/20 text-cyan-300 px-1 rounded">' + m.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</mark></li>';
                     });
                     listHTML += '</ol>';
-                    resultBox.innerHTML = listHTML;
+                    if(resultBox) resultBox.innerHTML = listHTML;
                 } else {
-                    countBox.innerText = 'Matches Found: 0';
-                    resultBox.innerHTML = '<span class="text-rose-400">No match found.</span>';
+                    if(countBox) countBox.innerText = 'Matches Found: 0';
+                    if(resultBox) resultBox.innerHTML = '<span class="text-rose-400">No match found.</span>';
                 }
             } catch(err) {
-                countBox.innerText = 'Syntax Error';
-                resultBox.innerHTML = '<span class="text-amber-400">Invalid Regex Pattern or Flags!</span>';
+                if(countBox) countBox.innerText = 'Syntax Error';
+                if(resultBox) resultBox.innerHTML = '<span class="text-amber-400">Invalid Regex Pattern or Flags!</span>';
             }
         };
 
         document.getElementById('regexPattern')?.addEventListener('input', runRegexHeavy);
         document.getElementById('regexFlags')?.addEventListener('input', runRegexHeavy);
         document.getElementById('regexText')?.addEventListener('input', runRegexHeavy);`
+    },
+    {
+        id: 'base64_tool',
+        name: 'Base64 Convertor',
+        icon: 'fa-code',
+        ui: `<div>
+            <label>Mode:</label>
+            <select id="b64Mode" class="mb-2">
+                <option value="encode">Encode (Text to Base64)</option>
+                <option value="decode">Decode (Base64 to Text)</option>
+            </select>
+
+            <label class="mt-2">Input:</label>
+            <textarea id="b64Input" rows="3" placeholder="Enter text here..."></textarea>
+
+            <label class="mt-2">Output:</label>
+            <textarea id="b64Output" rows="3" readonly placeholder="Output will appear here..."></textarea>
+        </div>`,
+        js: `const runBase64 = () => {
+            const mode = document.getElementById('b64Mode')?.value;
+            const input = document.getElementById('b64Input')?.value || '';
+            const output = document.getElementById('b64Output');
+            if (!output) return;
+
+            if (!input) { output.value = ''; return; }
+
+            try {
+                if (mode === 'encode') {
+                    output.value = btoa(unescape(encodeURIComponent(input)));
+                } else {
+                    output.value = decodeURIComponent(escape(atob(input)));
+                }
+            } catch(e) {
+                output.value = 'Error: Invalid Input for ' + mode;
+            }
+        };
+
+        document.getElementById('b64Mode')?.addEventListener('change', runBase64);
+        document.getElementById('b64Input')?.addEventListener('input', runBase64);`
+    },
+    {
+        id: 'password_generator',
+        name: 'Password Generator Pro',
+        icon: 'fa-key',
+        ui: `<div>
+            <label>Length: <span id="passLenVal" class="text-cyan-400 font-bold">16</span></label>
+            <input id="passLength" type="range" min="8" max="64" value="16" style="width:100%; margin:8px 0;">
+
+            <div class="grid grid-cols-2 gap-2 my-2 text-xs">
+                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chkUpper" checked> ABC Uppercase</label>
+                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chkLower" checked> abc Lowercase</label>
+                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chkNum" checked> 123 Numbers</label>
+                <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chkSym" checked> !@# Symbols</label>
+            </div>
+
+            <button type="button" id="btnGenPass">Generate New Key</button>
+
+            <label class="mt-3">Result Key:</label>
+            <input id="passOutput" type="text" readonly placeholder="Click generate button...">
+        </div>`,
+        js: `const genPass = () => {
+            const len = parseInt(document.getElementById('passLength')?.value || '16');
+            const upper = document.getElementById('chkUpper')?.checked;
+            const lower = document.getElementById('chkLower')?.checked;
+            const num = document.getElementById('chkNum')?.checked;
+            const sym = document.getElementById('chkSym')?.checked;
+
+            let chars = '';
+            if (upper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (lower) chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (num) chars += '0123456789';
+            if (sym) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            const out = document.getElementById('passOutput');
+            if (!chars) { if(out) out.value = 'Select at least one character set!'; return; }
+
+            let res = '';
+            for (let i = 0; i < len; i++) {
+                res += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            if(out) out.value = res;
+        };
+
+        document.getElementById('passLength')?.addEventListener('input', (e) => {
+            const span = document.getElementById('passLenVal');
+            if (span) span.innerText = e.target.value;
+            genPass();
+        });
+
+        document.getElementById('btnGenPass')?.addEventListener('click', genPass);
+        document.getElementById('chkUpper')?.addEventListener('change', genPass);
+        document.getElementById('chkLower')?.addEventListener('change', genPass);
+        document.getElementById('chkNum')?.addEventListener('change', genPass);
+        document.getElementById('chkSym')?.addEventListener('change', genPass);
+        genPass();`
+    },
+    {
+        id: 'json_validator',
+        name: 'JSON Formatter & Validator',
+        icon: 'fa-file-code',
+        ui: `<div>
+            <label>Paste Raw JSON Code:</label>
+            <textarea id="jsonInput" rows="4" placeholder='{"key": "value"}'></textarea>
+
+            <button type="button" id="btnFormatJson">Format & Validate</button>
+
+            <div id="jsonStatus" class="mt-2 text-xs font-bold font-mono"></div>
+            <textarea id="jsonOutput" rows="4" readonly placeholder="Formatted output will appear here..."></textarea>
+        </div>`,
+        js: `document.getElementById('btnFormatJson')?.addEventListener('click', () => {
+            const input = document.getElementById('jsonInput')?.value.trim();
+            const status = document.getElementById('jsonStatus');
+            const output = document.getElementById('jsonOutput');
+
+            if (!input) {
+                if (status) { status.innerText = '⚠️ Please enter JSON text!'; status.className = 'mt-2 text-xs font-bold text-amber-400'; }
+                if (output) output.value = '';
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(input);
+                if (output) output.value = JSON.stringify(parsed, null, 4);
+                if (status) { status.innerText = '✅ Valid JSON Code!'; status.className = 'mt-2 text-xs font-bold text-emerald-400'; }
+            } catch(e) {
+                if (status) { status.innerText = '❌ Invalid JSON: ' + e.message; status.className = 'mt-2 text-xs font-bold text-rose-400'; }
+                if (output) output.value = '';
+            }
+        });`
     }
 ];
+        
